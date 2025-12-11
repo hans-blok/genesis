@@ -1,0 +1,15 @@
+# VS Code-instellingen (editor-specifiek, niet in git)
+.vscode/
+
+# automatische backups
+*.bak
+
+# Afbeeldingen (niet versioneren)
+*.png
+*.PNG
+*.svg
+*.SVG
+
+
+# Alle bestanden die met 'ign' beginnen (bijv. ign_tmp.txt)
+ign*
