@@ -23,7 +23,7 @@
   - robuuste software,
   - lage onderhoudslast,
   - heldere en testbare specificaties.
-- De Yourdon-methode en andere klassieke analysemethoden worden gezien als geldige referentiepunten voor duidelijk specificeren.
+
 
 ## Artikel 4 — Kwaliteit van Specificaties en Modellen
 
@@ -64,6 +64,17 @@
 ## Artikel 8 — Evolutie van de Constitutie
 
 - Wijzigingen aan de constitutie zijn alleen toegestaan via een expliciet, afzonderlijk updateproces.
+- **Inhoudelijke wijzigingen** (nieuwe regels, gewijzigde principes, aangepaste normen) **mogen alleen door een mens** worden gedaan.
+- **Alleen Logos mag** redactionele verbeteringen doen:
+  - Layout verbeteren (opmaak, structuur, leesbaarheid)
+  - Grammatica en spelling corrigeren
+  - Secties anders indelen voor betere toegankelijkheid
+  - Markdown formatting verbeteren
+- **Alle andere agents mogen NIET**:
+  - De constitutie inhoudelijk wijzigen
+  - De constitutie redactioneel aanpassen
+  - Nieuwe artikelen toevoegen
+  - Bestaande regels wijzigen of verwijderen
 - Beleid, repo-regels of feature-specifieke documenten mogen de constitutie niet wijzigen of overschrijven.
 - Versies worden beheerd via duidelijke versie-nummers en changelogs.
 
