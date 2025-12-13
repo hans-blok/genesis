@@ -2,7 +2,7 @@
 # .gitignore
 
 # Input directory (working files, local data)
-/input/
+# /input/
 
 # Backup files
 *.bak

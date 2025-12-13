@@ -62,15 +62,24 @@ Wanneer alles bekend is, bouwt Logos deze structuur:
 2. Deze agent kent de context, workflow, en maakt sub-agents aan.
 3. De moeder-agent documenteert zichzelf in `/desc-agents`.
 4. De moeder-agent vult het beleid in de governance directory in (`/<kit-naam>-governance/beleid.md`).
-5. **Agent bestanden**:
+5. **BELANGRIJKE REGEL: Moeder-agent moet stoppen als Logos niet is opgeruimd**:
+   - Voordat de moeder-agent begint met het aanmaken van haar eerste agent, controleert deze of Logos is opgeruimd
+   - Als `.github/agents/genesis.logos.agent.md` nog aanwezig is, **stopt de moeder-agent**
+   - De moeder-agent geeft een bericht: "Logos moet eerst worden opgeruimd voordat ik agents kan aanmaken. Gebruik commando: 'Ruim jezelf op' of 'Cleanup'"
+   - Pas nadat Logos is opgeruimd, mag de moeder-agent starten met het aanmaken van sub-agents
+6. **Agent bestanden**:
    - Agent definitie: `.github/agents/<kit-naam>.moeder.agent.md` (gelezen door Copilot)
    - Prompt bestand: `.github/prompts/<kit-naam>.moeder.prompt.md` (verwijst naar de agent)
    - Agent beschrijving: `desc-agents/00-<kit-naam>-moeder-agent.md` (uitgebreide documentatie)
-6. **Gebruik**: `@github /<kit-naam>.moeder` om de moeder-agent te activeren.
+7. **Gebruik**: `@github /<kit-naam>.moeder` om de moeder-agent te activeren.
 
 ## Artikel 5 — Sub-Agents
 1. Alleen de moeder-agent maakt sub-agents.
-2. Elke agent documenteert zichzelf:
+2. **Benodigde informatie voor het aanmaken van een sub-agent**:
+   - **Naam van de agent**: Korte naam die de functie beschrijft (bijv. `convert`, `specificeer`, `datamodelleer`)
+   - **Domein van de agent**: Het werkgebied of specialisatie (voorbeelden: `convert`, `specificeer`, `datamodelleer`, `valideer`, `genereer`)
+   - **Context**: Beschrijving van wat de agent doet, welke input/output, welke verantwoordelijkheden
+3. Elke agent documenteert zichzelf:
    - doel
    - input en output
    - beperkingen
@@ -109,16 +118,20 @@ Wanneer alles bekend is, bouwt Logos deze structuur:
    - `constitutie.md` → `/<kit-naam>-governance/constitutie.md`
    - `handvest-logos.md` → `/<kit-naam>-governance/handvest-logos.md`
    - Template voor `beleid.md` → `/<kit-naam>-governance/beleid.md`
-   - `agent-file-template.md` → `/<kit-naam>-kit/templates/agent-file-template.md`
+   - `templates/agent-file-template.md` → `/<kit-naam>-kit/templates/agent-file-template.md`
 5. **Logos ruimt zichzelf op op instructie van de gebruiker**:
    - Cleanup gebeurt alleen wanneer de gebruiker expliciet instrueert: "Ruim jezelf op" of "Cleanup"
    - **Verwijdert**:
      - `.github/agents/genesis.logos.agent.md` uit de nieuwe repository
+     - `.github/prompts/genesis.logos.prompt.md` uit de nieuwe repository
      - `/desc-agents/00-genesis-logos-agent.md` (indien aanwezig)
      - `handvest-logos.md` uit de root (blijft alleen in governance directory)
      - `constitutie.md` uit de root (blijft alleen in governance directory)
+     - `agent-file-template.md` uit de root (blijft alleen in `/<kit-naam>-kit/templates/`)
    - **Blijft behouden**:
      - `agent-file-template.md` in `/<kit-naam>-kit/templates/` (gebruikt door moeder-agent)
+     - `handvest-logos.md` in `/<kit-naam>-governance/` (voor referentie)
+     - `constitutie.md` in `/<kit-naam>-governance/` (voor referentie)
    - Rapporteert het eindresultaat aan de gebruiker
    - **Rationale**: Gebruiker kan eerst de structuur controleren voordat Logos opruimt
 6. **Logos past .gitignore aan**:
