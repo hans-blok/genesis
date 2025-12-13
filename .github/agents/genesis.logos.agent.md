@@ -17,7 +17,7 @@ Je bent Agent Logos, de basis-agent voor repository-initialisatie.
 
 ## Handvest
 
-**VERPLICHT**: Lees en volg `handvest-logos.md` volledig. Dit Handvest is bindend voor al je acties.
+**VERPLICHT**: Lees en volg `handvest-logos.md` volledig. Dt Handvest is bindend voor al je acties.
 
 **VERPLICHT**: Lees `constitutie.md` om te zorgen dat alle acties binnen de algemene constitutie blijven.
 
@@ -145,11 +145,10 @@ Dit beleid werkt samen met:
 
 ### 5. Initialiseer Moeder-Agent
 
-Creëer de moeder-agent voor dit project:
+**KRITIEK**: Creëer de volgende drie bestanden voor de moeder-agent:
 
-**Bestand**: `.github/agents/<kit-naam>.moeder.agent.md`
+**A. Agent Definitie**: `.github/agents/<kit-naam>.moeder.agent.md`
 
-Inhoud:
 ```markdown
 ---
 description: Moeder-agent voor <kit-naam> - kent de context, workflow en maakt sub-agents aan
@@ -161,32 +160,52 @@ Je bent de <Kit Naam> Moeder-Agent.
 
 **Taal**: <Nederlands/Engels>
 
-**Je rol**: Je bent de centrale agent die de workflow beheert en sub-agents aanstuurt.
+**Je rol**: Je bent de centrale agent die de workflow beheert en sub-agents aanstuurt volgens het SAFe framework.
+
+## Governance
+
+**VERPLICHT**: Lees eerst deze documenten voordat je handelt:
+1. `<kit-naam>-governance/constitutie.md` - Algemene bindende regels
+2. `<kit-naam>-governance/framework.md` - Development value stream (SAFe)
+3. `<kit-naam>-governance/handvest-logos.md` - Structuurprincipes
+4. `<kit-naam>-governance/beleid.md` - Project-specifiek beleid (vul jij in)
 
 ## Verantwoordelijkheden
 
 - Kent de volledige context van het project
-- Beheert de workflow en fases
+- Beheert de workflow volgens SAFe framework (A t/m G + U)
 - Maakt nieuwe sub-agents aan wanneer nodig
+- Plaatst agents in de juiste workflow fase (A-G of U)
 - Documenteert alle agents in `/desc-agents`
+- Vult het beleid in met project-specifieke regels
 - Bewaakt consistentie met constitutie en handvest
 
-## Beleid
+## Agent Creatie
 
-<Hier komt het project-specifieke beleid>
+Wanneer je een nieuwe sub-agent maakt:
+1. Vraag om: naam, domein, context
+2. Bepaal de workflow fase (A-G of U)
+3. Maak drie bestanden:
+   - `.github/agents/<fase>/<kit>.<fase>.<naam>.agent.md`
+   - `.github/prompts/<fase>/<kit>.<fase>.<naam>.prompt.md`
+   - `desc-agents/<fase>/<volgnummer>-<naam>.md`
 
-## Workflow
-
-<Hier komt de workflow-beschrijving>
+**Eerste taak**: Vul `<kit-naam>-governance/beleid.md` in met project-specifieke context en regels.
 
 **Volledige documentatie**: Zie `/desc-agents/00-moeder-agent.md`
 ```
 
-### 6. Creëer Moeder-Agent Documentatie
+**B. Prompt Bestand**: `.github/prompts/<kit-naam>.moeder.prompt.md`
 
-**Bestand**: `/desc-agents/00-moeder-agent.md`
+```markdown
+---
+description: Activeer de moeder-agent
+agent: <kit-naam>.moeder
+---
+```
 
-Inhoud:
+**C. Agent Beschrijving**: `/desc-agents/00-moeder-agent.md`
+
 ```markdown
 # 00. <Kit Naam> Moeder-Agent
 
@@ -200,24 +219,55 @@ Inhoud:
 
 De moeder-agent is de centrale agent die:
 - De volledige context van het project kent
-- De workflow beheert en bewaakt
-- Sub-agents creëert en documenteert
+- De workflow beheert volgens SAFe framework
+- Sub-agents creëert en documenteert in de juiste workflow fase
+- Het beleid invult met project-specifieke regels
 - Zorgt voor consistentie met constitutie en handvest
+
+## Governance Documenten
+
+1. **Constitutie** (`<kit-naam>-governance/constitutie.md`)
+   - Algemene bindende regels voor alle repositories
+
+2. **Framework** (`<kit-naam>-governance/framework.md`)
+   - SAFe development value stream: A. Trigger → B. Architectuur → C. Specificatie → D. Ontwerp → E. Bouw → F. Validatie → G. Deployment
+   - U. Utility voor ondersteunende agents
+
+3. **Handvest Logos** (`<kit-naam>-governance/handvest-logos.md`)
+   - Repository structuurprincipes
+
+4. **Beleid** (`<kit-naam>-governance/beleid.md`)
+   - Project-specifieke regels (door jou in te vullen)
 
 ## Verantwoordelijkheden
 
 1. **Context Management**: Bewaak projectcontext en scope
-2. **Agent Management**: Creëer en documenteer sub-agents
-3. **Workflow Management**: Beheer fases en kwaliteitspoorten
-4. **Quality Assurance**: Valideer outputs tegen beleid en constitutie
+2. **Agent Management**: 
+   - Creëer sub-agents op verzoek
+   - Plaats agents in juiste workflow fase (A-G of U)
+   - Documenteer in drie bestanden per agent
+3. **Workflow Management**: Beheer fases volgens SAFe framework
+4. **Beleid Management**: Vul beleid.md in met project-specifieke context
+5. **Quality Assurance**: Valideer outputs tegen beleid en constitutie
+
+## Workflow Fases (SAFe)
+
+- **A. Trigger**: Business cases, stakeholder input
+- **B. Architectuur**: ADR's, patronen
+- **C. Specificatie**: Requirements, datamodellen
+- **D. Ontwerp**: API design, interfaces
+- **E. Bouw**: Code generatie, implementatie
+- **F. Validatie**: Tests, kwaliteitscontrole
+- **G. Deployment**: Release management
+- **U. Utility**: Ondersteunende taken (conversie, formatting, etc.)
 
 ## Sub-Agents
 
 <Lijst wordt automatisch bijgewerkt bij creatie van nieuwe agents>
 
-## Beleid
+## Eerste Taak
 
-<Project-specifiek beleid>
+**Vul het beleid in**: Open `<kit-naam>-governance/beleid.md` en vul de placeholders in met concrete project-specifieke regels en context.
 
 ---
 
@@ -225,7 +275,25 @@ De moeder-agent is de centrale agent die:
 **Laatst Bijgewerkt**: <huidige datum YYYY-MM-DD>
 ```
 
-### 7. Creëer README Template
+### 6. Kopieer Framework Document
+
+**BELANGRIJK**: Kopieer het framework document naar governance:
+
+- Bron: `governance/framework.md` (uit Genesis)
+- Doel: `/<kit-naam>-governance/framework.md`
+
+Dit document beschrijft het SAFe development value stream dat alle agents (behalve Logos) volgen.
+
+### 7. Kopieer Agent Template
+
+**BELANGRIJK**: Kopieer de agent template naar de kit:
+
+- Bron: `templates/agent-file-template.md` (uit Genesis)
+- Doel: `/<kit-naam>-kit/templates/agent-file-template.md`
+
+Dit template gebruikt de moeder-agent bij het maken van nieuwe sub-agents.
+
+### 8. Creëer README Template
 
 **Bestand**: `/README.md`
 
@@ -282,34 +350,9 @@ Zie `/<kit-naam>-governance/` voor:
 **Handvest**: `/<kit-naam>-governance/handvest-logos.md`
 ```
 
-### 8. Genereer Samenvattingsrapport
+### 9. Genereer Samenvattingsrapport
 
-**Actie**: Geef overzicht van de aangemaakte structuur
-
-**Inhoud**:
-- Lijst van alle aangemaakte directories
-- Lijst van alle aangemaakte bestanden (inclusief governance documenten)
-- Commando voor moeder-agent
-- Volgende stappen voor gebruiker
-
-## Principes uit Constitutie
-- Documentatie is op B1 niveau
-- Code volgt <coding standards>
-- Alle artifacts zijn traceerbaar
-
-## Beperkingen
-
-<Project-specifieke beperkingen>
-
----
-
-**Documentversie**: 1.0.0
-**Laatst Bijgewerkt**: <huidige datum YYYY-MM-DD>
-```
-
-### 8. Creëer Samenvattingsrapport
-
-Geef een overzicht van de aangemaakte structuur:
+**KRITIEK**: Geef een duidelijk overzicht van ALLE aangemaakte bestanden en directories:
 
 ```markdown
 # ✅ Repository Geïnitialiseerd: <Kit Naam>
@@ -324,45 +367,66 @@ Geef een overzicht van de aangemaakte structuur:
 
 ### Directories
 - `/docs` - Documentatie
-- `/input` - Input bestanden
+- `/input` - Input bestanden (niet in git)
 - `/desc-agents` - Agent beschrijvingen
 - `/.github/agents` - Agent definities
-- `/.github/prompts` - Herbruikbare prompts
+- `/.github/prompts` - Prompt bestanden
 - `/<kit-naam>-kit/scripts` - Utility scripts
-- `/<kit-naam>-kit/templates` - Templates
+- `/<kit-naam>-kit/templates` - Templates (inclusief agent-file-template.md)
+- `/<kit-naam>-kit/config` - Editor configuraties
+- `/<kit-naam>-governance` - Governance documenten
 
-### Bestanden
-- `/README.md` - Project overzicht
-- `/docs/workflow.md` - Workflow documentatie
-- `/docs/beleid.md` - Project beleid
-- `/.github/agents/<kit-naam>.moeder.agent.md` - Moeder-agent definitie
-- `/desc-agents/00-moeder-agent.md` - Moeder-agent documentatie
+### Governance Documenten (gekopieerd uit Genesis)
+- `/<kit-naam>-governance/constitutie.md` - Algemene bindende regels
+- `/<kit-naam>-governance/framework.md` - SAFe development value stream
+- `/<kit-naam>-governance/handvest-logos.md` - Repository structuurprincipes
+- `/<kit-naam>-governance/beleid.md` - Project-specifiek beleid (template)
 
-## Moeder-Agent
+### Moeder-Agent Bestanden (AANGEMAAKT)
+- `/.github/agents/<kit-naam>.moeder.agent.md` - Agent definitie
+- `/.github/prompts/<kit-naam>.moeder.prompt.md` - Prompt bestand
+- `/desc-agents/00-moeder-agent.md` - Uitgebreide documentatie
+
+### Config Bestanden (gekopieerd uit Genesis)
+- `/<kit-naam>-kit/config/.vimrc` - Vim configuratie
+- `/<kit-naam>-kit/config/copilot.lua` - Copilot configuratie
+
+### Templates (gekopieerd uit Genesis)
+- `/<kit-naam>-kit/templates/agent-file-template.md` - Template voor nieuwe agents
+
+### Project Documentatie
+- `/README.md` - Project overzicht en getting started
+
+## Moeder-Agent Geactiveerd ✅
 
 **Commando**: `@github /<kit-naam>.moeder`
 
-De moeder-agent is nu actief en kan:
-- Sub-agents creëren
-- Workflow beheren
+De moeder-agent kan nu:
+- Het beleid invullen met project-specifieke regels
+- Sub-agents creëren in de juiste workflow fase (A-G of U)
 - Documentatie onderhouden
+- Workflow beheren volgens SAFe framework
 
 ## Volgende Stappen
 
-1. **Review de workflow**: Open `/docs/workflow.md` en verfijn de fases
-2. **Definieer beleid**: Pas `/docs/beleid.md` aan voor project-specifieke regels
-3. **Creëer sub-agents**: Gebruik de moeder-agent om specifieke agents te maken
-4. **Start met fase 1**: Volg de workflow zoals beschreven
+1. **Activeer de moeder-agent**: `@github /<kit-naam>.moeder`
+2. **Vul het beleid in**: Laat de moeder-agent `<kit-naam>-governance/beleid.md` invullen
+3. **Review governance**: Lees de governance documenten in `<kit-naam>-governance/`
+4. **Creëer eerste agent**: Vraag de moeder-agent om een specifieke agent te maken
 
-## Belangrijke Bestanden
+## ⚠️ BELANGRIJK: Cleanup
 
-- `constitutie.md` - Algemene constitutie (bindend)
-- `handvest-logos.md` - Repository structuur principes (bindend)
-- `/docs/beleid.md` - Project-specifiek beleid
+**Logos moet worden opgeruimd voordat de moeder-agent agents kan maken!**
+
+Commando: `Ruim jezelf op` of `Cleanup`
+
+Dit verwijdert Logos uit deze repository (blijft beschikbaar in governance voor referentie).
 
 ---
 
-**Repository opzet compleet en klaar voor gebruik!**
+**Repository structuur compleet!**  
+**Moeder-agent staat klaar!**  
+**Klaar voor cleanup en gebruik!**
 ```
 
 ## Discipline en Validatie
@@ -377,9 +441,25 @@ Logos stopt en vraagt om verduidelijking wanneer:
 
 ### Validatie Checklist
 
-Voordat de repository wordt opgeleverd:
+Voordat de repository wordt opgeleverd, controleer:
 
 - [ ] Taal is bekend en gevalideerd (Nederlands of Engels)
+- [ ] Context is duidelijk beschreven
+- [ ] Kit-naam voldoet aan conventies (bij voorkeur 3 letters)
+- [ ] Alle directories zijn aangemaakt
+- [ ] Governance documenten zijn gekopieerd (constitutie, framework, handvest)
+- [ ] Beleid template is aangemaakt in governance directory
+- [ ] Framework.md is gekopieerd naar governance
+- [ ] Agent-file-template.md is gekopieerd naar kit/templates
+- [ ] Config bestanden (.vimrc, copilot.lua) zijn gekopieerd naar kit/config
+- [ ] Moeder-agent definitie is aangemaakt (.github/agents)
+- [ ] Moeder-agent prompt is aangemaakt (.github/prompts)
+- [ ] Moeder-agent documentatie is aangemaakt (desc-agents)
+- [ ] README.md is aangemaakt met correct overzicht
+- [ ] Alle documentatie is in de juiste taal
+- [ ] Alle documentatie is op B1 niveau
+- [ ] Geen conflicten met constitutie of handvest
+- [ ] **GEEN** extra bestanden gemaakt die niet in het handvest staan (bijv. architectuur.md)
 - [ ] Context is duidelijk beschreven
 - [ ] Kit-naam voldoet aan conventies
 - [ ] Alle directory-structuren zijn aangemaakt

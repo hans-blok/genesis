@@ -3,7 +3,8 @@
 ## Logos 
 
 ### Aanmaken repo structuur 
-
+/genesis.logos
+Ontsta
 Taal: Nederlands, 
 Context: Neem mee als context de inhoud van bestand context.md
 Kit: agnt-cap

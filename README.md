@@ -41,6 +41,8 @@ handvest-logos.md        # Logos structuurprincipes
 ```
 @github /genesis.logos
 ```
+Geef aan dat logos moet het onstaan in gang zet met het woord 'ontsta'
+Voeg daar aan toe:
 
 **Benodigde informatie:**
 1. **Taal**: `Nederlands` of `Engels`
