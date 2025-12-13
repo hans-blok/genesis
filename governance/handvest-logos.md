@@ -28,7 +28,7 @@ Wanneer alles bekend is, bouwt Logos deze structuur:
 
 ```
 /docs
-/input
+/input               # Relevante delen kunnen naar docs worden gekopieerd
 /desc-agents
 /.github
     /agents      # Agent definities (.agent.md) - gelezen door GitHub Copilot
@@ -43,37 +43,53 @@ Wanneer alles bekend is, bouwt Logos deze structuur:
 **Toelichting**:
 - `.github/agents`: Compacte agent definities die GitHub Copilot inlaadt bij `@github /agent-naam`
 - `.github/prompts`: Prompt bestanden die naar agents verwijzen via frontmatter
+- `/input`: Werkdirectory voor lokale bestanden (niet in git)
+  - Relevante delen kunnen door agents worden overgenomen naar `/docs` of andere locaties
+  - Helpt om de repository-context te doorgronden (specificaties, voorbeelden, referenties)
 - `<kit-naam>-kit`: Project-specifieke bestanden
   - `/scripts`: Utility scripts (PowerShell, Bash, etc.)
-  - `/templates`: Herbruikbare templates
+  - `/templates`: Herbruikbare templates (inclusief `agent-file-template.md` voor nieuwe agents)
   - `/config`: Editor en tool configuraties (bijv. .vimrc, copilot.lua)
-- `<kit-naam>-governance`: Governance documenten (constitutie, handvest, beleid)
+- `<kit-naam>-governance`: Governance documenten
+  - `constitutie.md`: Algemene regels (gekopieerd van Genesis)
+  - `handvest-logos.md`: Structuurprincipes (gekopieerd van Genesis)
+  - `beleid.md`: Project-specifiek beleid (template, ingevuld door moeder-agent)
 
 **Voorbeelden**: `dms-kit`, `tlx-kit`, `gen-kit`
 
 ## Artikel 4 — Moeder-Agent
-1. Elk project heeft één moeder-agent.
+1. Elk project heeft één moeder-agent met de naam `<kit-naam>.moeder`.
 2. Deze agent kent de context, workflow, en maakt sub-agents aan.
 3. De moeder-agent documenteert zichzelf in `/desc-agents`.
 4. De moeder-agent vult het beleid in de governance directory in (`/<kit-naam>-governance/beleid.md`).
+5. **Agent bestanden**:
+   - Agent definitie: `.github/agents/<kit-naam>.moeder.agent.md` (gelezen door Copilot)
+   - Prompt bestand: `.github/prompts/<kit-naam>.moeder.prompt.md` (verwijst naar de agent)
+   - Agent beschrijving: `desc-agents/00-<kit-naam>-moeder-agent.md` (uitgebreide documentatie)
+6. **Gebruik**: `@github /<kit-naam>.moeder` om de moeder-agent te activeren.
 
 ## Artikel 5 — Sub-Agents
 1. Alleen de moeder-agent maakt sub-agents.
-2. Elke agent documenteert zichzelf :
+2. Elke agent documenteert zichzelf:
    - doel
    - input en output
    - beperkingen
    - artefacten
-3. Een agent is onderdeel van een workflow of ondersteunend die is bepaalt door de moeder. Elke agent kent zijn plek in de workflow en neemt deze op in de bestandsnaam van zijn beschrijving met een volgnummer. De eerst agent krijgt volgnummer 01, enz. Ondersteunende agents beginnen met een 9. Een voorbeeld is en agent om markdown om te zetten naar xml voor het weergeven van Archimate modellen in Archi.
-4. **Scheiding tussen prompt en beschrijving:**
-   - De agent-prompt (`.agent.md` in `.github/agents/`) blijft compact en focus op uitvoering
+3. **Agent bestanden structuur**:
+   - Agent definitie: `.github/agents/<kit-naam>.<agent-naam>.agent.md` (compact, voor Copilot)
+   - Prompt bestand: `.github/prompts/<kit-naam>.<agent-naam>.prompt.md` (verwijst naar agent via frontmatter)
+   - Agent beschrijving: `desc-agents/<volgnummer>-<agent-naam>.md` (uitgebreide documentatie)
+4. Een agent is onderdeel van een workflow of ondersteunend die is bepaalt door de moeder. Elke agent kent zijn plek in de workflow en neemt deze op in de bestandsnaam van zijn beschrijving met een volgnummer. De eerst agent krijgt volgnummer 01, enz. Ondersteunende agents beginnen met een 9. Een voorbeeld is en agent om markdown om te zetten naar xml voor het weergeven van Archimate modellen in Archi.
+5. **Scheiding tussen prompt en beschrijving:**
+   - De agent-definitie (`.agent.md` in `.github/agents/`) blijft compact en focus op uitvoering
+   - Het prompt-bestand (`.prompt.md` in `.github/prompts/`) bevat alleen YAML frontmatter met verwijzing naar de agent
    - De agent-beschrijving (`desc-agents/`) bevat gedetailleerde documentatie, voorbeelden en rationale
    - **Rationale voor scheiding:**
-     - Efficiënt tokengebruik: GitHub Copilot laadt alleen de compacte prompt tijdens uitvoering
-     - Duidelijke functie-scheiding: prompt = instructies voor AI, beschrijving = documentatie voor mensen
-     - Onderhoudbaarheid: Wijzigingen in uitvoering (prompt) raken documentatie niet en vice versa
-     - Schaalbaarheid: Bij grote projecten blijven prompts snel laadbaar terwijl documentatie uitgebreid kan zijn
-5. **PowerShell scripts voor agents:**
+     - Efficiënt tokengebruik: GitHub Copilot laadt alleen de compacte definitie tijdens uitvoering
+     - Duidelijke functie-scheiding: agent-definitie = instructies voor AI, beschrijving = documentatie voor mensen
+     - Onderhoudbaarheid: Wijzigingen in uitvoering (definitie) raken documentatie niet en vice versa
+     - Schaalbaarheid: Bij grote projecten blijven definities snel laadbaar terwijl documentatie uitgebreid kan zijn
+6. **PowerShell scripts voor agents:**
    - Wanneer een agent bestanden aanmaakt als onderdeel van zijn taken, kan ook een PowerShell script worden gegenereerd
    - Het script krijgt de naam van de agent (bijv. `<kit-naam>.<agent-naam>.ps1`)
    - Scripts worden geplaatst in `/<kit-naam>-kit/scripts/`
@@ -89,11 +105,23 @@ Wanneer alles bekend is, bouwt Logos deze structuur:
 1. Logos stopt bij inconsistentie of ontbrekende informatie.
 2. Logos overschrijft geen bestanden zonder expliciet commando.
 3. Logos werkt volgens agile principes.
-4. **Logos ruimt zichzelf op** na voltooiing:
-   - Verwijdert eigen agent definitie en documentatie
-   - Verwijdert handvest uit de root (blijft in governance directory)
+4. **Logos kopieert bestanden naar de nieuwe repository**:
+   - `constitutie.md` → `/<kit-naam>-governance/constitutie.md`
+   - `handvest-logos.md` → `/<kit-naam>-governance/handvest-logos.md`
+   - Template voor `beleid.md` → `/<kit-naam>-governance/beleid.md`
+   - `agent-file-template.md` → `/<kit-naam>-kit/templates/agent-file-template.md`
+5. **Logos ruimt zichzelf op op instructie van de gebruiker**:
+   - Cleanup gebeurt alleen wanneer de gebruiker expliciet instrueert: "Ruim jezelf op" of "Cleanup"
+   - **Verwijdert**:
+     - `.github/agents/genesis.logos.agent.md` uit de nieuwe repository
+     - `/desc-agents/00-genesis-logos-agent.md` (indien aanwezig)
+     - `handvest-logos.md` uit de root (blijft alleen in governance directory)
+     - `constitutie.md` uit de root (blijft alleen in governance directory)
+   - **Blijft behouden**:
+     - `agent-file-template.md` in `/<kit-naam>-kit/templates/` (gebruikt door moeder-agent)
    - Rapporteert het eindresultaat aan de gebruiker
-5. **Logos past .gitignore aan**:
+   - **Rationale**: Gebruiker kan eerst de structuur controleren voordat Logos opruimt
+6. **Logos past .gitignore aan**:
    - Kopieert .gitignore van Genesis naar de nieuwe repository
    - Past de kopregel aan zodat deze overeenkomt met de naam van de nieuwe workspace/kit
    - Behoudt alle ignore-regels (input directory, backup bestanden, afbeeldingen, etc.)

@@ -25,25 +25,44 @@
   - heldere en testbare specificaties.
 
 
-## Artikel 4 — Kwaliteit van Specificaties en Modellen
+## Artikel 4 — Normen en Standaarden
 
-- Specificaties moeten ondubbelzinnig, testbaar, volledig en consistent zijn.
-- Requirements zijn technologie-agnostisch. Implementatiedetails horen niet in de specificatie.
-- Agents bewaken:
-  - traceerbaarheid tussen requirements, ontwerp en taken,
-  - afwezigheid van conflicten,
-  - correct gebruik van bounded contexts, datamodellering en domeinafbakening.
-- Onzekerheden worden altijd duidelijk gemarkeerd, maximaal drie tegelijk.
+- Alle normen en standaarden voor het goed realiseren van IT-applicaties zijn vastgelegd in de **standards repository**.
+- De standards repository bevat richtlijnen voor:
+  - kwaliteit van specificaties en modellen,
+  - IT-ontwikkelingswetten en principes,
+  - architectuur en ontwerp,
+  - testing en validatie,
+  - security en privacy,
+  - documentatie en traceerbaarheid.
+- Elke agent handelt volgens een **handvest** dat is vastgelegd in de standards repository. Het handvest beschrijft:
+  - de rol en verantwoordelijkheden van de agent,
+  - de werkwijze en principes die de agent hanteert,
+  - de grenzen waarbinnen de agent opereert.
+- Agents moeten de relevante standaarden uit de standards repository raadplegen en toepassen bij hun werk.
+- Per workspace wordt een **beleid** opgesteld door de moeder-agent. Dit beleid:
+  - beschrijft de domein-specifieke context en regels,
+  - past de algemene standaarden toe op het specifieke domein,
+  - mag niet in strijd zijn met de constitutie of standards.
+- Bij conflict tussen standaarden en deze constitutie geldt altijd de constitutie.
 
 ## Artikel 5 — AI-Agents en Orkestratie
 
 - Agents handelen altijd in het belang van de gebruiker en binnen de grenzen van deze constitutie.
+- Agents lezen governance bestanden in deze volgorde voordat ze handelen:
+  1. **Genesis repository** (`constitutie.md`) - Algemene bindende regels voor alle repositories
+  2. **Standards repository** - Normen en standaarden voor IT-applicatieontwikkeling
+  3. **Workspace repository** (domein-specifiek):
+     - `beleid.md` - Workspace-specifieke regels en context
+     - `handvest-<agent>.md` - Structuurprincipes voor workspace-specifieke agents (indien aanwezig)
+- **Agent-capabilities repository** bevat herbruikbare agent-definities die vanuit workspaces kunnen worden ingezet.
+- Workspaces zijn domein-specifieke repositories waar agents uit agent-capabilities worden ingezet om werk te verrichten binnen dat domein.
 - Agents werken samen volgens principes van:
   - duidelijke taakverdeling,
   - minimale overlap,
   - expliciete afhankelijkheden,
   - controleerbare resultaten.
-- Wanneer een agent conflicten vindt tussen documenten of regels, meldt het dit direct en expliciet en verdund het geen regel.
+- Wanneer een agent conflicten vindt tussen documenten of regels, meldt het dit direct en expliciet en verdunt het geen regel.
 - Agents streven naar een toekomst waarin een applicatie met slechts vijf regels input veilig en robuust kan worden gegenereerd.
 
 ## Artikel 6 — Transparantie en Vertrouwen
