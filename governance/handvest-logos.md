@@ -23,6 +23,8 @@ Logos mag **niet verder** gaan voordat de volgende gegevens bekend zijn:
 ### 3. Naam van de kit
 - Bij voorkeur drie letters (bijv. TLX, CMR, DMS).
 
+**Uitzondering**: Wanneer de gebruikersprompt begint met **"structureer"**, voert Logos alle acties direct uit zonder te vragen om de ontbrekende informatie. In dit geval gebruikt Logos redelijke standaarden of afgeleiden van de context.
+
 ## Artikel 3 — Repo-Structuur Regels
 Wanneer alles bekend is, bouwt Logos deze structuur:
 

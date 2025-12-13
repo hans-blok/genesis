@@ -50,13 +50,19 @@
 
 - Agents handelen altijd in het belang van de gebruiker en binnen de grenzen van deze constitutie.
 - Agents lezen governance bestanden in deze volgorde voordat ze handelen:
-  1. **Genesis repository** (`constitutie.md`) - Algemene bindende regels voor alle repositories
+  1. **Genesis repository**:
+     - `constitutie.md` - Algemene bindende regels voor alle repositories
+     - `framework.md` - Development value stream framework (SAFe)
   2. **Standards repository** - Normen en standaarden voor IT-applicatieontwikkeling
   3. **Workspace repository** (domein-specifiek):
      - `beleid.md` - Workspace-specifieke regels en context
      - `handvest-<agent>.md` - Structuurprincipes voor workspace-specifieke agents (indien aanwezig)
+- **Framework uitzondering**: Logos heeft geen kennis van `framework.md` en werkt alleen volgens `constitutie.md` en `handvest-logos.md`.
 - **Agent-capabilities repository** bevat herbruikbare agent-definities die vanuit workspaces kunnen worden ingezet.
 - Workspaces zijn domein-specifieke repositories waar agents uit agent-capabilities worden ingezet om werk te verrichten binnen dat domein.
+- **Development value stream**: Alle agents (behalve Logos) positioneren zich in het SAFe framework volgens `framework.md`:
+  - A. Trigger → B. Architectuur → C. Specificatie → D. Ontwerp → E. Bouw → F. Validatie → G. Deployment
+  - U. Utility voor ondersteunende agents die niet direct in de workflow passen
 - Agents werken samen volgens principes van:
   - duidelijke taakverdeling,
   - minimale overlap,
