@@ -71,7 +71,27 @@ def get_genesis_root():
     """Vind de Genesis root directory"""
     script_dir = Path(__file__).parent
     genesis_root = script_dir.parent
-    return genesis_root
+    
+    # Als dit script in Genesis zit, return die
+    if (genesis_root / "governance/gedragscode.md").exists():
+        return genesis_root
+    
+    # Zoek in sibling directories (als script gekopieerd is)
+    current = Path.cwd()
+    parent = current.parent
+    genesis = parent / "genesis"
+    if genesis.exists() and (genesis / "governance/gedragscode.md").exists():
+        return genesis
+    
+    # Zoek in environment variable
+    import os
+    genesis_env = os.environ.get("GENESIS_PATH")
+    if genesis_env:
+        genesis_path = Path(genesis_env)
+        if genesis_path.exists() and (genesis_path / "governance/gedragscode.md").exists():
+            return genesis_path
+    
+    return None
 
 
 def create_folders(workspace_path):
@@ -357,29 +377,30 @@ build/
     gitignore_path.write_text(gitignore, encoding="utf-8")
 
 
-def git_init(workspace_path, workspace_name):
-    """Initialiseer Git repository"""
+def add_to_git(workspace_path, workspace_name):
+    """Voeg workspace toe aan bestaande git repository"""
     try:
-        # Git init
-        subprocess.run(["git", "init"], cwd=workspace_path, check=True, 
-                      capture_output=True, text=True)
+        # Check of we in een git repo zitten
+        result = subprocess.run(["git", "rev-parse", "--git-dir"], 
+                              cwd=workspace_path.parent, 
+                              capture_output=True, text=True)
+        
+        if result.returncode != 0:
+            print_warning("Geen git repository gevonden, overslaan")
+            return False
         
         # Git add
-        subprocess.run(["git", "add", "."], cwd=workspace_path, check=True,
+        subprocess.run(["git", "add", str(workspace_path)], 
+                      cwd=workspace_path.parent, check=True,
                       capture_output=True, text=True)
-        
-        # Git commit
-        commit_msg = f"Initial commit: {workspace_name} workspace structure"
-        subprocess.run(["git", "commit", "-m", commit_msg], cwd=workspace_path, 
-                      check=True, capture_output=True, text=True)
         
         return True
     except subprocess.CalledProcessError as e:
-        print_warning(f"Git initialisatie gefaald: {e}")
+        print_warning(f"Git add gefaald: {e}")
         return False
 
 
-def print_success_message(workspace_name, workspace_path):
+def print_success_message(workspace_name, workspace_path, git_added):
     """Print success bericht met volgende stappen"""
     print()
     print("━" * 60)
@@ -389,11 +410,20 @@ def print_success_message(workspace_name, workspace_path):
     print(f"📁 Locatie: {workspace_path}")
     print(f"🔧 Agents: moeder, rolbeschrijver")
     print(f"📄 Beleid: governance/beleid.md")
+    if git_added:
+        print(f"📝 Git: Bestanden toegevoegd (staged, nog niet gecommit)")
     print()
     print("Volgende stappen:")
-    print(f"1. cd {workspace_path}")
-    print("2. Controleer en pas governance/beleid.md aan indien nodig")
-    print("3. Start met: @github /moeder Richt workspace in")
+    if git_added:
+        print("1. Review wijzigingen: git status")
+        print(f"2. Commit: git commit -m \"Add {workspace_name} workspace\"")
+        print(f"3. cd {workspace_path.name}")
+        print("4. Controleer governance/beleid.md")
+        print("5. Start met: @github /moeder Richt workspace in")
+    else:
+        print(f"1. cd {workspace_path.name}")
+        print("2. Controleer en pas governance/beleid.md aan indien nodig")
+        print("3. Start met: @github /moeder Richt workspace in")
     print()
 
 
@@ -401,24 +431,68 @@ def main():
     parser = argparse.ArgumentParser(
         description="Initialiseer een nieuwe document-repository workspace",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
+        epilog=r"""
 Voorbeelden:
-  python scripts/init-workspace.py --name "kerstmenu" --description "Kerstmenu planning"
-  python scripts/init-workspace.py --name "api-docs" --context "temp/api-context.md"
-  python scripts/init-workspace.py --name "project-x" --description "..." --parent "../workspaces"
+  # In Genesis, maak subdirectory:
+  cd c:\gitrepo\genesis
+  python scripts/init-workspace.py --name "kerstmenu"
+  
+  # In lege directory, initialiseer huidige directory:
+  cd c:\gitrepo\kerstmenu-2025
+  python init-workspace.py
+  
+  # Met context:
+  python init-workspace.py --context "../genesis/temp/context.md"
+
+Let op:
+  - Zonder --name: gebruikt huidige directory naam
+  - Als directory naam == workspace naam: initialiseert DEZE directory
+  - Anders: maakt subdirectory aan
+  - Genesis wordt automatisch gezocht in sibling directories
+  - Bestanden worden automatisch toegevoegd aan git (staged) als git repo aanwezig
         """
     )
     
-    parser.add_argument("--name", required=True, 
-                       help="Workspace naam (lowercase, hyphens)")
+    parser.add_argument("--name",
+                       help="Workspace naam (lowercase, hyphens) - default: huidige directory naam")
     parser.add_argument("--description", 
                        help="Korte omschrijving van workspace doel")
     parser.add_argument("--context", 
                        help="Pad naar context.md bestand (voor beleid generatie)")
-    parser.add_argument("--parent", default=".", 
-                       help="Parent directory voor workspace (default: huidige dir)")
     
     args = parser.parse_args()
+    
+    # Genesis root vinden
+    genesis_root = get_genesis_root()
+    if not genesis_root:
+        print_error("Genesis repository niet gevonden")
+        print()
+        print("Oplossingen:")
+        print("1. Plaats Genesis als sibling directory van deze workspace")
+        print("2. Set environment variable: GENESIS_PATH=/pad/naar/genesis")
+        print("3. Kopieer dit script naar Genesis en draai daar")
+        print()
+        return 1
+    
+    # Huidige directory
+    current_dir = Path.cwd()
+    
+    # Bepaal workspace naam en locatie
+    if not args.name:
+        # Gebruik huidige directory naam als default
+        args.name = current_dir.name
+        print("🚀 Nieuwe Workspace Initialisatie")
+        print("━" * 60)
+        print(f"Gedetecteerde naam: {args.name}")
+        
+        # Valideer naam
+        valid, error_msg = validate_name(args.name)
+        if not valid:
+            print_warning(f"Directory naam voldoet niet aan conventies: {error_msg}")
+            args.name = input("Workspace naam (lowercase, hyphens): ").strip()
+            if not args.name:
+                print_error("Workspace naam is verplicht")
+                return 1
     
     # Validatie
     valid, error_msg = validate_name(args.name)
@@ -426,22 +500,31 @@ Voorbeelden:
         print_error(f"Ongeldige workspace naam: {error_msg}")
         return 1
     
-    # Genesis root vinden
-    genesis_root = get_genesis_root()
-    if not (genesis_root / "governance/gedragscode.md").exists():
-        print_error("Genesis root niet gevonden. Run dit script vanuit Genesis repository.")
-        return 1
-    
-    # Parent directory
-    parent_dir = Path(args.parent).resolve()
-    if not parent_dir.exists():
-        print_error(f"Parent directory bestaat niet: {parent_dir}")
-        return 1
-    
-    # Check of workspace al bestaat
-    if workspace_exists(args.name, parent_dir):
-        print_error(f"Workspace '{args.name}' bestaat al in {parent_dir}")
-        return 1
+    # Bepaal of we in huidige directory of subdirectory initialiseren
+    if current_dir.name == args.name:
+        # Initialiseer huidige directory
+        workspace_path = current_dir
+        
+        # Check of directory leeg is (behalve .git en init-workspace.py)
+        existing_items = [
+            item for item in workspace_path.iterdir()
+            if item.name not in ['.git', 'init-workspace.py', '.gitignore', '__pycache__']
+        ]
+        
+        if existing_items:
+            print_warning(f"Directory is niet leeg: {len(existing_items)} item(s)")
+            confirm = input("Doorgaan? (y/n): ").strip().lower()
+            if confirm != 'y':
+                print("Geannuleerd")
+                return 0
+    else:
+        # Maak subdirectory
+        workspace_path = current_dir / args.name
+        
+        # Check of workspace al bestaat
+        if workspace_path.exists():
+            print_error(f"Workspace '{args.name}' bestaat al in {current_dir}")
+            return 1
     
     # Description
     description = args.description or f"Document repository workspace: {args.name}"
@@ -456,7 +539,6 @@ Voorbeelden:
             context_content = context_path.read_text(encoding="utf-8")
     
     # Start initialisatie
-    workspace_path = parent_dir / args.name
     print_header(f"Workspace Initialisatie: {args.name}")
     
     # 1. Folders aanmaken
@@ -498,12 +580,13 @@ Voorbeelden:
     generate_gitignore(workspace_path)
     print_step(".gitignore aangemaakt")
     
-    # 9. Git initialiseren
-    if git_init(workspace_path, args.name):
-        print_step("Git repository geïnitialiseerd")
+    # 9. Toevoegen aan git (indien aanwezig)
+    git_added = add_to_git(workspace_path, args.name)
+    if git_added:
+        print_step("Bestanden toegevoegd aan git (staged)")
     
     # Success!
-    print_success_message(args.name, workspace_path)
+    print_success_message(args.name, workspace_path, git_added)
     
     return 0
 
