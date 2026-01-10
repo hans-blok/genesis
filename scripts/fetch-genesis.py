@@ -14,6 +14,7 @@ Gebruik:
 
 import argparse
 import shutil
+import subprocess
 import sys
 from pathlib import Path
 from datetime import datetime
@@ -193,7 +194,7 @@ def sync_governance(genesis_root, workspace_root, dry_run, backup_dir):
 
 
 def sync_agents(genesis_root, workspace_root, workspace_name, dry_run, backup_dir):
-    """Sync agent componenten (alle agents uit Genesis)"""
+    """Sync agent componenten (alle agents uit Genesis behalve Logos)"""
     print_header("Agent Componenten")
     
     # Detecteer alle agents in Genesis
@@ -203,8 +204,8 @@ def sync_agents(genesis_root, workspace_root, workspace_name, dry_run, backup_di
     if genesis_agents_dir.exists():
         for rolbeschrijving in genesis_agents_dir.glob("*.md"):
             agent_name = rolbeschrijving.stem
-            # Skip niet-agent bestanden (als die er zijn)
-            if agent_name not in ["README", "template"]:
+            # Skip Logos en niet-agent bestanden
+            if agent_name not in ["logos", "README", "template"]:
                 agents.append(agent_name)
         
         print_info(f"Gevonden agents in Genesis: {', '.join(agents)}")
@@ -360,7 +361,22 @@ def print_summary(all_updates, all_skips, dry_run):
     
     if dry_run:
         print("\n💡 Run zonder --dry-run om wijzigingen door te voeren")
-alle agents uit Genesis: moeder, rolbeschrijver, publisher, etc.)
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Synchroniseer Genesis updates naar deze workspace",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Voorbeelden:
+  python scripts/fetch-genesis.py
+  python scripts/fetch-genesis.py --dry-run
+  python scripts/fetch-genesis.py --genesis-path "../genesis"
+  python scripts/fetch-genesis.py --components governance,agents
+
+Componenten:
+  governance  - Governance documenten (gedragscode, workspace-standaard, agent-standaard)
+  agents      - Agent componenten (alle agents behalve Logos: moeder, rolbeschrijver, publisher, etc.)
   scripts     - Utility scripts (create-agent.py, fetch-genesis.py)
   all         - Alles (default)
 
@@ -416,22 +432,7 @@ Let op: Script doet automatisch een git pull in Genesis repository voor laatste 
             print_warning(f"Git pull gefaald: {e}")
             print_info("Ga door met huidige Genesis versie")
     elif args.no_pull:
-        print_info("Git pull overgeslagen (--no-pull)")pace_root:
-        print_error("Workspace root niet gevonden (geen governance/ folder)")
-        print_info("Run dit script vanuit een workspace")
-        return 1
-    
-    # Vind Genesis
-    genesis_root = find_genesis_root(args.genesis_path)
-    if not genesis_root:
-        print_error("Genesis repository niet gevonden")
-        print()
-        print("Oplossingen:")
-        print("1. Geef path op: --genesis-path \"../genesis\"")
-        print("2. Plaats Genesis als sibling directory van deze workspace")
-        print("3. Set environment variable: GENESIS_PATH=/pad/naar/genesis")
-        print()
-        return 1
+        print_info("Git pull overgeslagen (--no-pull)")
     
     # Extract workspace naam uit beleid.md
     beleid_path = workspace_root / "governance/beleid.md"

@@ -90,11 +90,9 @@
 
 - Wijzigingen aan de constitutie zijn alleen toegestaan via een expliciet, afzonderlijk updateproces.
 - **Inhoudelijke wijzigingen** (nieuwe regels, gewijzigde principes, aangepaste normen) **mogen alleen door een mens** worden gedaan.
-- **Alleen Logos mag** redactionele verbeteringen doen:
-  - Layout verbeteren (opmaak, structuur, leesbaarheid)
-  - Grammatica en spelling corrigeren
-  - Secties anders indelen voor betere toegankelijkheid
-  - Markdown formatting verbeteren
+- **Alleen Logos en een mens mogen** de constitutie aanpassen:
+  - **Mens**: Inhoudelijke wijzigingen (nieuwe regels, gewijzigde principes)
+  - **Logos**: Redactionele verbeteringen (layout, grammatica, spelling, structuur, markdown formatting)
 - **Alle andere agents mogen NIET**:
   - De constitutie inhoudelijk wijzigen
   - De constitutie redactioneel aanpassen

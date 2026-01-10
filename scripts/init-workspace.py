@@ -5,7 +5,7 @@ Workspace Initialisatie Script
 Maakt een nieuwe document-repository workspace aan met:
 - Folderstructuur volgens workspace-standaard
 - Governance documenten van Genesis
-- Agent moeder en rolbeschrijver
+- Alle agents uit Genesis (behalve Logos)
 - Beleid.md gegenereerd uit context
 - Git repository initialisatie
 
@@ -217,6 +217,21 @@ Pas aan indien scope of agents wijzigen.
     return beleid
 
 
+def get_genesis_agents(genesis_root):
+    """Detecteer alle agents in Genesis behalve Logos"""
+    agents_dir = genesis_root / "governance/rolbeschrijvingen"
+    agents = []
+    
+    if agents_dir.exists():
+        for rolbeschrijving in agents_dir.glob("*.md"):
+            agent_name = rolbeschrijving.stem
+            # Skip Logos en niet-agent bestanden
+            if agent_name not in ["logos", "README", "template"]:
+                agents.append(agent_name)
+    
+    return sorted(agents)
+
+
 def copy_agent(agent_name, genesis_root, workspace_path, workspace_name):
     """Kopieer agent componenten en pas aan voor workspace"""
     
@@ -417,7 +432,7 @@ def print_success_message(workspace_name, workspace_path, git_added):
     print("━" * 60)
     print()
     print(f"📁 Locatie: {workspace_path}")
-    print(f"🔧 Agents: moeder, rolbeschrijver")
+    print(f"🔧 Agents: alle Genesis agents (behalve Logos)")
     print(f"📄 Beleid: governance/beleid.md")
     if git_added:
         print(f"📝 Git: Bestanden toegevoegd (staged, nog niet gecommit)")
@@ -429,11 +444,10 @@ def print_success_message(workspace_name, workspace_path, git_added):
     print("4. Start workspace ordening: @github /moeder Richt workspace in")
     print()
     print("Agents toevoegen:")
-    print("1. Doe voorstel in temp/agent-voorstellen.md")
-    print("2. Maak rolbeschrijving: @github /rolbeschrijver agent-naam=... doel=\"...\" domein=\"...\"")
+    print("1. Vul temp/context.md met gewenste agents")
+    print("2. Vraag rolbeschrijver: beschrijf de agents uit context en genereer create statements")
     print("3. Genereer agent: python scripts/create-agent.py agent-naam")
-    print("4. Vul prompt contract in: .github/prompts/agent-naam.prompt.md")
-    print("5. Test agent: @github /agent-naam [opdracht]")
+    print("4. Veel plezier met de agents in je nieuwe workspace!")
     if git_added:
         print()
         print("Git workflow:")
@@ -585,15 +599,16 @@ Let op:
     beleid_path.write_text(beleid_content, encoding="utf-8")
     print_step("Beleid.md gegenereerd")
     
-    # 4. Agent moeder installeren
-    copy_agent("moeder", genesis_root, workspace_path, args.name)
-    print_step("Agent moeder geïnstalleerd")
+    # 4. Agents installeren (alles behalve Logos)
+    agents = get_genesis_agents(genesis_root)
+    if agents:
+        for agent in agents:
+            copy_agent(agent, genesis_root, workspace_path, args.name)
+        print_step(f"Agents geïnstalleerd: {', '.join(agents)}")
+    else:
+        print_warning("Geen agents gevonden in Genesis")
     
-    # 5. Agent rolbeschrijver installeren
-    copy_agent("rolbeschrijver", genesis_root, workspace_path, args.name)
-    print_step("Agent rolbeschrijver geïnstalleerd")
-    
-    # 6. Utility scripts kopiëren
+    # 5. Utility scripts kopiëren
     copied_scripts = copy_utility_scripts(genesis_root, workspace_path)
     if copied_scripts:
         print_step(f"Utility scripts gekopieerd: {', '.join([s.split('/')[-1] for s in copied_scripts])}")
