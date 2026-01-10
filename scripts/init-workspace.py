@@ -247,17 +247,26 @@ def copy_agent(agent_name, genesis_root, workspace_path, workspace_name):
         shutil.copy2(runner_src, runner_dst)
 
 
-def copy_create_agent_script(genesis_root, workspace_path):
-    """Kopieer create-agent.py script"""
-    src = genesis_root / "scripts/create-agent.py"
-    dst = workspace_path / "scripts/create-agent.py"
+def copy_utility_scripts(genesis_root, workspace_path):
+    """Kopieer utility scripts naar workspace"""
+    scripts = [
+        "scripts/create-agent.py",
+        "scripts/fetch-genesis.py"
+    ]
     
-    if src.exists():
-        shutil.copy2(src, dst)
-        return True
-    else:
-        print_warning("create-agent.py niet gevonden in Genesis")
-        return False
+    copied = []
+    for script_path in scripts:
+        src = genesis_root / script_path
+        dst = workspace_path / script_path
+        
+        if src.exists():
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dst)
+            copied.append(script_path)
+        else:
+            print_warning(f"{script_path} niet gevonden in Genesis")
+    
+    return copied
 
 
 def generate_readme(workspace_name, description, workspace_path):
@@ -414,16 +423,22 @@ def print_success_message(workspace_name, workspace_path, git_added):
         print(f"📝 Git: Bestanden toegevoegd (staged, nog niet gecommit)")
     print()
     print("Volgende stappen:")
+    print(f"1. cd {workspace_path.name}")
+    print("2. Beschrijf workspace context: edit temp/context.md")
+    print("3. Controleer governance/beleid.md (gegenereerd uit context)")
+    print("4. Start workspace ordening: @github /moeder Richt workspace in")
+    print()
+    print("Agents toevoegen:")
+    print("1. Doe voorstel in temp/agent-voorstellen.md")
+    print("2. Maak rolbeschrijving: @github /rolbeschrijver agent-naam=... doel=\"...\" domein=\"...\"")
+    print("3. Genereer agent: python scripts/create-agent.py agent-naam")
+    print("4. Vul prompt contract in: .github/prompts/agent-naam.prompt.md")
+    print("5. Test agent: @github /agent-naam [opdracht]")
     if git_added:
+        print()
+        print("Git workflow:")
         print("1. Review wijzigingen: git status")
-        print(f"2. Commit: git commit -m \"Add {workspace_name} workspace\"")
-        print(f"3. cd {workspace_path.name}")
-        print("4. Controleer governance/beleid.md")
-        print("5. Start met: @github /moeder Richt workspace in")
-    else:
-        print(f"1. cd {workspace_path.name}")
-        print("2. Controleer en pas governance/beleid.md aan indien nodig")
-        print("3. Start met: @github /moeder Richt workspace in")
+        print(f"2. Commit: git commit -m \"Initialize {workspace_name} workspace\"")
     print()
 
 
@@ -578,22 +593,38 @@ Let op:
     copy_agent("rolbeschrijver", genesis_root, workspace_path, args.name)
     print_step("Agent rolbeschrijver geïnstalleerd")
     
-    # 6. Create-agent script kopiëren
-    if copy_create_agent_script(genesis_root, workspace_path):
-        print_step("Create-agent script gekopieerd")
+    # 6. Utility scripts kopiëren
+    copied_scripts = copy_utility_scripts(genesis_root, workspace_path)
+    if copied_scripts:
+        print_step(f"Utility scripts gekopieerd: {', '.join([s.split('/')[-1] for s in copied_scripts])}")
     
-    # 7. README genereren
+    # 7. Context template kopiëren naar temp
+    context_template_src = genesis_root / "templates/context-template.md"
+    context_dst = workspace_path / "temp/context.md"
+    
+    if context_template_src.exists():
+        # Lees template en vul workspace naam in
+        template_content = context_template_src.read_text(encoding="utf-8")
+        template_content = template_content.replace("[Datum invullen]", date.today().strftime('%d %B %Y'))
+        template_content = template_content.replace("[Draft / In Review / Final]", "Draft")
+        
+        context_dst.write_text(template_content, encoding="utf-8")
+        print_step("Context template gekopieerd naar temp/context.md")
+    else:
+        print_warning("Context template niet gevonden, overslaan")
+    
+    # 8. README genereren
     generate_readme(args.name, description, workspace_path)
     print_step("README.md gegenereerd")
     
-    # 8. .gitignore genereren
+    # 9. .gitignore genereren
     generate_gitignore(workspace_path)
     print_step(".gitignore aangemaakt")
     
-    # 9. Toevoegen aan git (indien aanwezig)
+    # 10. Toevoegen aan git (indien aanwezig)
     git_added = add_to_git(workspace_path, args.name)
     if git_added:
-        print_step("Bestanden toegevoegd aan git (staged)")
+        print_step("Bestanden toegevoegd aan git (staged, temp/ uitgesloten)")
     
     # Success!
     print_success_message(args.name, workspace_path, git_added)
