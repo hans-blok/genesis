@@ -1,3 +1,0 @@
----
-agent: genesis.logos.agent
----

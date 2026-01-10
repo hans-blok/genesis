@@ -55,7 +55,7 @@
      - `framework.md` - Development value stream framework (SAFe)
   2. **Standards repository** - Normen en standaarden voor IT-applicatieontwikkeling
   3. **Workspace repository** (domein-specifiek):
-     - `beleid.md` - Workspace-specifieke regels en context
+     - `beleid.md` - Workspace-specifieke regels, context, scope en niet-in-scope
      - `handvest-<agent>.md` - Structuurprincipes voor workspace-specifieke agents (indien aanwezig)
 - **Framework uitzondering**: Logos heeft geen kennis van `framework.md` en werkt alleen volgens `constitutie.md` en `handvest-logos.md`.
 - **Agent-capabilities repository** bevat herbruikbare agent-definities die vanuit workspaces kunnen worden ingezet.
@@ -103,14 +103,32 @@
 - Beleid, repo-regels of feature-specifieke documenten mogen de constitutie niet wijzigen of overschrijven.
 - Versies worden beheerd via duidelijke versie-nummers en changelogs.
 
-## Artikel 9 — Minimale Vereisten voor Beleid per Repository
+## Artikel 9 — Minimale Vereisten voor Beleid per Workspace
 
-*(Het beleid wordt in individuele repos uitgewerkt, maar volgt minimaal deze normen.)*
+*(Het beleid wordt in individuele workspaces uitgewerkt, maar volgt minimaal deze normen.)*
 
-- De context van de repo wordt beschreven in begrijpelijke taal.
-- Het beleid mag geen conflicten veroorzaken met deze constitutie.
-- Het beleid moet de werking van agents binnen die repo verduidelijken.
-- Het beleid moet bijdragen aan consistente kwaliteit en reproduceerbare output.
+### Verplichte Onderdelen
+
+Elke workspace heeft een **beleid document** (`beleid.md`) dat minimaal bevat:
+
+1. **Context**: Beschrijving van het domein en doel van de workspace in begrijpelijke taal
+2. **Scope**: Helder overzicht van wat WEL binnen de scope van deze workspace valt:
+   - Welke taken, activiteiten en verantwoordelijkheden
+   - Welke documenttypes en artefacten
+   - Welke workflows en processen
+3. **Niet in Scope**: Expliciet overzicht van wat NIET binnen de scope valt:
+   - Welke taken uitgesloten zijn
+   - Welke verantwoordelijkheden bij andere workspaces liggen
+   - Waar grenzen liggen met andere domeinen
+4. **Agent Werking**: Verduidelijking van hoe agents binnen deze workspace opereren
+5. **Kwaliteitsnormen**: Specifieke kwaliteitseisen voor deze workspace
+
+### Aanvullende Eisen
+
+- Het beleid mag geen conflicten veroorzaken met deze constitutie
+- Het beleid moet bijdragen aan consistente kwaliteit en reproduceerbare output
+- Scope en niet-in-scope moeten ondubbelzinnig en testbaar zijn
+- Bij onduidelijkheid over scope moet dit expliciet worden gedocumenteerd
 
 ## Artikel 10 — Slotbepaling
 

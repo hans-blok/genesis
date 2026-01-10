@@ -3,100 +3,82 @@
 > *"In den beginne was het Woord [...] Alle dingen zijn door het Woord geworden en zonder dit is geen ding geworden, dat geworden is."*  
 > — Geïnspireerd door Johannes 1:1,3
 
-**Genesis** is een agent-gedreven framework voor repository-initialisatie. Het brengt structuur, orde en governance aan in nieuwe projecten via de **Logos** basis-agent.
+**Genesis** is de basisrepository voor het standaardiseren en onderhouden van document-repositories. Het bevat governance documenten, workspace standaarden en Agent Logos - de Git en GitHub expert.
 
 ---
 
 ## 🎯 Overzicht
 
-Genesis automatiseert het opzetten van een complete repository-structuur met:
-- **Gestandaardiseerde directory-structuur**
-- **Governance documenten** (constitutie, handvest, beleid)
-- **Agent framework** (moeder-agent + sub-agents)
-- **Configuratiebestanden** (vim, copilot, gitignore)
-- **Documentatie templates**
+Genesis biedt:
+- **Workspace standaarden** voor folderstructuur en naamgeving
+- **Governance documenten** (constitutie, beleid)
+- **Agent Logos** definitie en rolbeschrijving
+- **Templates** voor documenten en configuraties
+- **Best practices** voor git/github workflows
 
 ## 🏗️ Structuur
 
-Genesis bevat:
-
 ```
+/docs                    # Documentatie (voor toekomstige uitbreidingen)
+/governance             # Governance documenten
+    gedragscode.md      # Constitutie voor alle repositories
+    beleid.md           # Genesis workspace beleid
+    workspace-standaard.md  # Standaard voor document-repositories
+    agent-standaard.md  # Standaard voor agent componenten
+    /rolbeschrijvingen  
+        logos.md        # Agent Logos rolbeschrijving (interne werking)
+/templates              # Document templates
+    rolbeschrijving-template.md
+/scripts                # Agent runners (Python)
+    (nog geen runners)
 /.github
-    /agents              # Agent definities
+    /agents             # Agent definities (DEPRECATED - zie agent-standaard)
         genesis.logos.agent.md
-    /prompts             # Prompt bestanden
-        genesis.logos.prompt.md
-/config                  # Standaard configuraties
+    /prompts            # Agent prompts (contract: in/uit)
+        logos.prompt.md
+/config                 # Editor configuraties
     .vimrc
     copilot.lua
-constitutie.md           # Algemene constitutie (bindend)
-handvest-logos.md        # Logos structuurprincipes
-.gitignore               # Standard ignore regels
+README.md               # Dit bestand
+.gitignore             # Git ignore patterns
 ```
+
+## 🤖 Agent Structuur
+
+Genesis gebruikt een **3-componenten agent model**:
+
+1. **Rolbeschrijving** (`governance/rolbeschrijvingen/`) - Interne werking en verantwoordelijkheden
+2. **Prompt** (`.github/prompts/`) - Contract met input/output specificatie
+3. **Runner** (`scripts/`) - Python script voor automatisering zonder AI
+
+**Voorbeeld: Agent Logos**
+- Rolbeschrijving: [governance/rolbeschrijvingen/logos.md](governance/rolbeschrijvingen/logos.md)
+- Prompt: [.github/prompts/logos.prompt.md](.github/prompts/logos.prompt.md)
+- Runner: `scripts/logos.py` (nog niet geïmplementeerd)
+
+Zie [governance/agent-standaard.md](governance/agent-standaard.md) voor volledige specificatie.
 
 ## 🚀 Gebruik
 
-### Initialiseer een Nieuwe Repository
+### Agent Logos Activeren
 
-```
-@github /genesis.logos
-```
-Geef aan dat logos moet het onstaan in gang zet met het woord 'ontsta'
-Voeg daar aan toe:
+Gebruik Agent Logos voor git/github advies en repository structurering:
 
-**Benodigde informatie:**
-1. **Taal**: `Nederlands` of `Engels`
-2. **Context**: Korte omschrijving van het toepassingsdomein
-3. **Kit-naam**: Bij voorkeur 3 letters (bijv. `DMS`, `TLX`, `CMR`)
-
-**Voorbeeld:**
+**Met AI (GitHub Copilot)**:
 ```
-@github /genesis.logos 
-Taal: Nederlands
-Context: Data migratie toolkit voor legacy systemen
-Kit: DMS
+@github /logos <opdracht>
 ```
 
-### Resultaat
+**Voorbeelden**:
+- `@github /logos Richt deze workspace in volgens de standaard`
+- `@github /logos Analyseer de huidige structuur`
+- `@github /logos Stel een .gitignore op voor deze repository`
 
-Logos creëert de volgende structuur in de nieuwe repository:
-
+**Zonder AI (runner)**:
+```bash
+python scripts/logos.py --check-structure
 ```
-/docs                    # Documentatie
-/input                   # Input bestanden (lokaal, niet in git)
-/desc-agents             # Agent beschrijvingen
-/.github
-    /agents              # Agent definities (.agent.md)
-    /prompts             # Prompt bestanden (.prompt.md)
-/<kit-naam>-kit
-    /scripts             # Utility scripts en agent-scripts
-    /templates           # Herbruikbare templates
-    /config              # Editor configuraties
-/<kit-naam>-governance
-    constitutie.md       # Algemene regels
-    handvest-logos.md    # Structuurprincipes
-    beleid.md            # Project-specifiek beleid (template)
-.gitignore               # Ignore regels aangepast voor project
-README.md                # Project overzicht
-```
-
-## 📋 Governance
-
-### Constitutie
-De **constitutie** (`constitutie.md`) bevat algemene regels die bindend zijn voor alle repositories en agents:
-- Taalgebruik en communicatie (B1 niveau)
-- Professionele normen (agile, duurzaam ontwerp)
-- Kwaliteitseisen voor specificaties
-- AI-agent gedrag en orkestratie
-- Transparantie en traceerbaarheid
-
-### Handvest van Logos
-Het **handvest** (`handvest-logos.md`) definieert hoe Logos repositories initialiseert:
-- Verplichte repository-structuur
-- Moeder-agent en sub-agent hiërarchie
-- Scheiding tussen prompts en beschrijvingen
-- Discipline en validatie
-- Cleanup gedrag (Logos ruimt zichzelf op na voltooiing)
+*(nog niet geïmplementeerd)*
 
 ### Beleid
 Elk project krijgt een **beleid** (`beleid.md`) dat project-specifieke regels bevat. Dit wordt ingevuld door de moeder-agent.
@@ -140,111 +122,89 @@ Agents hebben twee componenten:
 - Duidelijke functie-scheiding (AI vs. mens)
 - Betere onderhoudbaarheid
 
+### Typische Taken
+
+**Nieuwe repository**:
+1. Structuur inrichten volgens workspace-standaard
+2. README aanmaken
+3. .gitignore configureren
+4. Commit conventies documenteren
+
+**Bestaande repository**:
+1. Structuur analyseren en optimaliseren
+2. Documentatie updaten
+3. Git/GitHub best practices toepassen
+
+**Meer informatie**: Zie [governance/rolbeschrijvingen/logos.md](governance/rolbeschrijvingen/logos.md)
+
+## 📋 Governance
+
+### Gedragscode (Constitutie)
+[governance/gedragscode.md](governance/gedragscode.md) bevat algemene regels bindend voor alle repositories:
+- **Artikel 2**: Taalgebruik op B1 niveau
+- **Artikel 4**: Normen en standaarden, beleid per workspace
+- **Artikel 5**: AI-agents en orkestratie
+- **Artikel 8**: Evolutie van constitutie (alleen mensen wijzigen inhoud)
+- **Artikel 9**: Minimale vereisten voor workspace beleid (scope!)
+
+### Workspace Standaard
+[governance/workspace-standaard.md](governance/workspace-standaard.md) normeert:
+- Verplichte folderstructuur voor document-repositories
+- Naamgevingsconventies (lowercase, hyphens)
+- Markdown standaarden
+- Agent structuur en `/scripts` folder
+- Validatie checklist
+
+### Agent Standaard
+[governance/agent-standaard.md](governance/agent-standaard.md) definieert:
+- **3-componenten model**: Rolbeschrijving + Prompt + Runner
+- Rolbeschrijving: Interne werking (in `/governance/rolbeschrijvingen/`)
+- Prompt: Contract met in/uit (in `/.github/prompts/`)
+- Runner: Python script voor automatisering (in `/scripts/`)
+- Naamgevingsconventies en best practices
+
+### Genesis Beleid
+[governance/beleid.md](governance/beleid.md) definieert:
+- **Scope**: Wat Genesis WEL doet (governance, standaarden, templates, Logos)
+- **Niet in scope**: Wat Genesis NIET doet (domein-specifieke content, code, data)
+- Kwaliteitsnormen
+- Relatie met andere repositories
+
+## 📚 Templates
+
+In [templates/](templates/) vind je herbruikbare sjablonen:
+- `rolbeschrijving-template.md` - Voor nieuwe agent rolbeschrijvingen
+
 ## ⚙️ Configuratie
 
-Genesis kopieert standaard configuraties naar nieuwe repositories:
-
-### Editor Configuraties
-- **`.vimrc`**: Vim/Neovim configuratie voor Copilot
-- **`copilot.lua`**: Lua configuratie voor Neovim Copilot plugin
-
-### Git Configuratie
-- **`.gitignore`**: Negeert `/input/`, backup bestanden, afbeeldingen
-- Kopregel wordt aangepast naar project naam
-
-## 🛠️ PowerShell Scripts
-
-Agents kunnen PowerShell scripts genereren voor herhaald gebruik:
-- **Naam**: `<kit-naam>.<agent-naam>.ps1`
-- **Locatie**: `/<kit-naam>-kit/scripts/`
-- **Doel**: Automatiseren van agent-taken zonder AI-interactie
-
-## 📚 Voorbeelden
-
-### DMS (Data Migratie Systeem)
-```
-Taal: Nederlands
-Context: Data migratie toolkit voor het overzetten van legacy databases naar moderne platformen
-Kit: DMS
-```
-
-**Resulteert in:**
-- `dms-kit/` met scripts en templates
-- `dms-governance/` met beleid
-- `@github /dms.moeder` als centrale agent
-
-### TLX (Telemetrie/Analytics)
-```
-Taal: Engels
-Context: Telemetry collection and analysis framework for IoT devices
-Kit: TLX
-```
-
-**Resulteert in:**
-- `tlx-kit/` with scripts and templates
-- `tlx-governance/` with policy
-- `@github /tlx.moeder` as central agent
-
-## 🔄 Workflow
-
-1. **Initialisatie**: `@github /genesis.logos` met taal, context, kit-naam
-2. **Structuur**: Logos creëert directories, kopieert governance en config
-3. **Moeder-agent**: Logos maakt moeder-agent aan voor het project
-4. **Cleanup**: Logos verwijdert zichzelf en handvest uit root
-5. **Activatie**: `@github /<kit-naam>.moeder` om verder te gaan
-6. **Sub-agents**: Moeder-agent creëert specifieke agents voor workflow
-7. **Beleid**: Moeder-agent vult project-specifiek beleid in
-
-## 🎓 Principes
-
-Genesis volgt deze kernprincipes:
-
-1. **Orde en Structuur**: Consistente directory-structuur in alle projecten
-2. **Governance-first**: Constitutie en handvest zijn bindend
-3. **Agent Hiërarchie**: Logos → Moeder → Sub-agents
-4. **Scheiding van Zorgen**: Prompt ≠ Beschrijving, Agent ≠ Script
-5. **Zelf-cleanup**: Logos is eenmalig, moeder-agent blijft
-6. **Menselijke Controle**: Alleen mensen wijzigen constitutie
-
-## ❓ FAQ
-
-**Q: Waarom ruimt Logos zichzelf op?**  
-A: Logos is een initialisatie-agent die bij Genesis hoort, niet bij het nieuwe project. De moeder-agent neemt het over. Het handvest blijft beschikbaar in de governance directory.
-
-**Q: Kan ik de constitutie aanpassen?**  
-A: Alleen mensen mogen inhoudelijke wijzigingen maken. Logos mag alleen formattering aanpassen. Andere agents mogen de constitutie niet aanraken.
-
-**Q: Waarom twee bestanden per agent?**  
-A: De `.agent.md` in `.github/agents/` is compact voor Copilot (efficiënt tokengebruik). De beschrijving in `desc-agents/` is uitgebreid voor mensen.
-
-**Q: Wat als ik meer dan 3 letters wil voor de kit-naam?**  
-A: Dit kan, maar 3 letters is de voorkeur voor consistentie en leesbaarheid (bijv. `DMS`, `TLX`, `CMR`).
-
-**Q: Kan ik andere talen gebruiken dan Nederlands of Engels?**  
-A: Nee, het handvest staat alleen Nederlands en Engels toe. Dit zorgt voor consistentie in de documentatie.
-
-**Q: Wat is het verschil tussen moeder-agent en sub-agents?**  
-A: De moeder-agent kent de volledige context en workflow. Sub-agents doen specifieke taken. Alleen de moeder-agent mag nieuwe agents maken.
-
-## 📖 Documentatie
-
-- **Constitutie**: `constitutie.md` - Algemene regels (10 artikelen)
-- **Handvest**: `handvest-logos.md` - Logos gedrag (10 artikelen)
-- **Agent Definitie**: `.github/agents/genesis.logos.agent.md` - Logos implementatie
+In [config/](config/) staan editor configuraties:
+- `.vimrc` - Vim/Neovim configuratie
+- `copilot.lua` - Copilot configuratie voor Neovim
 
 ## 🤝 Bijdragen
 
-Genesis is een intern framework. Wijzigingen aan de constitutie of handvest moeten:
-1. Via menselijke review gaan
-2. Consistent zijn met bestaande principes
-3. Geen conflicten introduceren
+**Wijzigingen aan governance**:
+- Gedragscode: Alleen mensen mogen inhoudelijke wijzigingen doen
+- Logos mag alleen redactioneel verbeteren (Artikel 8)
+- Workspace standaard: Via issues en discussie
 
-## 📄 Licentie
+**Wijzigingen aan Logos**:
+- Via pull request met review
+- Testing in test-workspace
 
-Intern gebruik.
+## 📖 Meer Informatie
+
+- [Gedragscode (Constitutie)](governance/gedragscode.md)
+- [Workspace Standaard](governance/workspace-standaard.md)
+- [Agent Standaard](governance/agent-standaard.md)
+- [Genesis Beleid](governance/beleid.md)
+- [Agent Logos Rolbeschrijving](governance/rolbeschrijvingen/logos.md)
+- [Agent Logos Prompt](.github/prompts/logos.prompt.md)
+- [Agent Logos Definitie (deprecated)](.github/agents/genesis.logos.agent.md)
 
 ---
 
-**Genesis** - *Agent-gedreven repository initialisatie*
+**Genesis** - *Fundament voor gestandaardiseerde document-repositories*
 
-*"Logos is kenner van het scheppen en het ordenen"*
+**Maintained by**: Repository Owner + Agent Logos  
+**Versie**: 1.0

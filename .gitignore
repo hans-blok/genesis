@@ -1,43 +1,12 @@
-# Genesis - Repository Initialization Framework
+# Genesis - Document Repository Framework
 # .gitignore
+# Conform workspace-standaard.md
 
-# Input directory (working files, local data)
-# /input/
+# Tijdelijke context folder
+/temp/
 
-# Backup files
-*.bak
-*.backup
-*.old
-*~
-*.swp
-*.swo
-
-# Image files
-*.jpg
-*.jpeg
-*.png
-*.gif
-*.bmp
-*.svg
-*.ico
-*.webp
-*.tiff
-*.tif
-
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-Desktop.ini
-
-# Editor temporary files
-*.tmp
-*.temp
-.vscode/*
+# Editor bestanden
+.vscode/
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
@@ -47,6 +16,26 @@ Desktop.ini
 *.user
 *.userosscache
 *.sln.docstates
+
+# OS bestanden
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Tijdelijke bestanden
+*.tmp
+*.temp
+*.bak
+*.backup
+*.old
+*~
+*.swp
+*.swo
 
 # Logs
 *.log
@@ -72,7 +61,31 @@ out/
 
 # Archives
 *.zip
+*.Build output (indien aanwezig)
+_site/
+.jekyll-cache/
+dist/
+build/
+out/
+
+# Logs
+*.log
+logs/
+
+# Archives (grote bestanden)
+*.zip
 *.tar
 *.tar.gz
 *.rar
 *.7z
+
+# Niet voor document-repositories relevant maar voor completeness:
+# Dependencies
+node_modules/
+vendor/
+
+# Executables
+*.exe
+*.dll
+*.so
+*.dylib
