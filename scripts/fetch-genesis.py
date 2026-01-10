@@ -193,10 +193,25 @@ def sync_governance(genesis_root, workspace_root, dry_run, backup_dir):
 
 
 def sync_agents(genesis_root, workspace_root, workspace_name, dry_run, backup_dir):
-    """Sync agent componenten (moeder en rolbeschrijver)"""
+    """Sync agent componenten (alle agents uit Genesis)"""
     print_header("Agent Componenten")
     
-    agents = ["moeder", "rolbeschrijver"]
+    # Detecteer alle agents in Genesis
+    genesis_agents_dir = genesis_root / "governance/rolbeschrijvingen"
+    agents = []
+    
+    if genesis_agents_dir.exists():
+        for rolbeschrijving in genesis_agents_dir.glob("*.md"):
+            agent_name = rolbeschrijving.stem
+            # Skip niet-agent bestanden (als die er zijn)
+            if agent_name not in ["README", "template"]:
+                agents.append(agent_name)
+        
+        print_info(f"Gevonden agents in Genesis: {', '.join(agents)}")
+    else:
+        print_warning("Geen agents directory gevonden in Genesis")
+        return [], []
+    
     updated = []
     skipped = []
     
@@ -345,26 +360,13 @@ def print_summary(all_updates, all_skips, dry_run):
     
     if dry_run:
         print("\n💡 Run zonder --dry-run om wijzigingen door te voeren")
-
-
-def main():
-    parser = argparse.ArgumentParser(
-        description="Synchroniseer Genesis updates naar deze workspace",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Voorbeelden:
-  python scripts/fetch-genesis.py
-  python scripts/fetch-genesis.py --dry-run
-  python scripts/fetch-genesis.py --genesis-path "../genesis"
-  python scripts/fetch-genesis.py --components governance,agents
-
-Componenten:
-  governance  - Governance documenten (gedragscode, workspace-standaard, agent-standaard)
-  agents      - Agent componenten (moeder, rolbeschrijver)
+alle agents uit Genesis: moeder, rolbeschrijver, publisher, etc.)
   scripts     - Utility scripts (create-agent.py, fetch-genesis.py)
   all         - Alles (default)
 
 Backups worden opgeslagen in: .backups/genesis-sync/YYYYMMDD_HHMMSS/
+
+Let op: Script doet automatisch een git pull in Genesis repository voor laatste versie
         """
     )
     
@@ -374,12 +376,47 @@ Backups worden opgeslagen in: .backups/genesis-sync/YYYYMMDD_HHMMSS/
                        help="Componenten om te syncen: governance,agents,scripts of all")
     parser.add_argument("--dry-run", action="store_true",
                        help="Preview wijzigingen zonder daadwerkelijk te updaten")
+    parser.add_argument("--no-pull", action="store_true",
+                       help="Skip git pull in Genesis repository")
     
     args = parser.parse_args()
     
     # Vind workspace root
     workspace_root = find_workspace_root()
     if not workspace_root:
+        print_error("Workspace root niet gevonden (geen governance/ folder)")
+        print_info("Run dit script vanuit een workspace")
+        return 1
+    
+    # Vind Genesis
+    genesis_root = find_genesis_root(args.genesis_path)
+    if not genesis_root:
+        print_error("Genesis repository niet gevonden")
+        print()
+        print("Oplossingen:")
+        print("1. Geef path op: --genesis-path \"../genesis\"")
+        print("2. Plaats Genesis als sibling directory van deze workspace")
+        print("3. Set environment variable: GENESIS_PATH=/pad/naar/genesis")
+        print()
+        return 1
+    
+    # Git pull in Genesis (tenzij --no-pull)
+    if not args.no_pull and not args.dry_run:
+        print_header("Genesis Update")
+        try:
+            result = subprocess.run(["git", "pull"], cwd=genesis_root, 
+                                  capture_output=True, text=True, check=True)
+            if "Already up to date" in result.stdout:
+                print_info("Genesis is al up-to-date")
+            else:
+                print_step("Genesis geüpdatet via git pull")
+                if result.stdout.strip():
+                    print(result.stdout.strip())
+        except subprocess.CalledProcessError as e:
+            print_warning(f"Git pull gefaald: {e}")
+            print_info("Ga door met huidige Genesis versie")
+    elif args.no_pull:
+        print_info("Git pull overgeslagen (--no-pull)")pace_root:
         print_error("Workspace root niet gevonden (geen governance/ folder)")
         print_info("Run dit script vanuit een workspace")
         return 1
