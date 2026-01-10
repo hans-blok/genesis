@@ -443,6 +443,9 @@ Voorbeelden:
   
   # Met context:
   python init-workspace.py --context "../genesis/temp/context.md"
+  
+  # Force overschrijven:
+  python init-workspace.py --force
 
 Let op:
   - Zonder --name: gebruikt huidige directory naam
@@ -459,6 +462,8 @@ Let op:
                        help="Korte omschrijving van workspace doel")
     parser.add_argument("--context", 
                        help="Pad naar context.md bestand (voor beleid generatie)")
+    parser.add_argument("--force", action="store_true",
+                       help="Overschrijf bestaande bestanden zonder te vragen")
     
     args = parser.parse_args()
     
@@ -511,20 +516,25 @@ Let op:
             if item.name not in ['.git', 'init-workspace.py', '.gitignore', '__pycache__']
         ]
         
-        if existing_items:
+        if existing_items and not args.force:
             print_warning(f"Directory is niet leeg: {len(existing_items)} item(s)")
-            confirm = input("Doorgaan? (y/n): ").strip().lower()
+            confirm = input("Doorgaan en overschrijven? (y/n): ").strip().lower()
             if confirm != 'y':
                 print("Geannuleerd")
                 return 0
+        elif existing_items and args.force:
+            print_info(f"Directory is niet leeg, maar --force gegeven: {len(existing_items)} item(s) worden overschreven indien nodig")
     else:
         # Maak subdirectory
         workspace_path = current_dir / args.name
         
         # Check of workspace al bestaat
-        if workspace_path.exists():
+        if workspace_path.exists() and not args.force:
             print_error(f"Workspace '{args.name}' bestaat al in {current_dir}")
+            print_info("Gebruik --force om toch door te gaan")
             return 1
+        elif workspace_path.exists() and args.force:
+            print_info(f"Workspace '{args.name}' bestaat al, maar --force gegeven: bestanden worden overschreven")
     
     # Description
     description = args.description or f"Document repository workspace: {args.name}"
