@@ -46,21 +46,22 @@ README.md               # Repository overzicht en getting started
 **Structuur**:
 ```
 /docs
-  /{agent-naam}/       # Resultaten van workspace-specifieke agents
+  /resultaten/         # Agent output (per agent een subfolder)
+    /{agent-naam}/     # Resultaten van workspace-specifieke agents
   /procedures          # Algemene procedures (optioneel)
   /policies           # Algemene policies (optioneel)
   /guidelines         # Best practices en richtlijnen (optioneel)
   /references         # Naslagwerk en definities (optioneel)
 ```
 
-**Agent Folders** (alleen voor workspace-specifieke agents):
-- Workspace-specifieke agents leggen hun output vast in `/docs/{agent-naam}/`
+**Agent Resultaten** (alleen voor workspace-specifieke agents):
+- Workspace-specifieke agents leggen hun output vast in `/docs/resultaten/{agent-naam}/`
 - **Niet voor Genesis standaard agents** (moeder, rolbeschrijver, publisher, logos)
 - Alleen voor agents die specifiek voor deze workspace zijn aangemaakt
 - Bijvoorbeeld:
-  - `/docs/data-validator/` - Validatie rapporten (workspace-specifiek)
-  - `/docs/report-generator/` - Gegenereerde rapporten (workspace-specifiek)
-  - `/docs/quality-checker/` - Kwaliteitsanalyses (workspace-specifiek)
+  - `/docs/resultaten/data-validator/` - Validatie rapporten (workspace-specifiek)
+  - `/docs/resultaten/report-generator/` - Gegenereerde rapporten (workspace-specifiek)
+  - `/docs/resultaten/quality-checker/` - Kwaliteitsanalyses (workspace-specifiek)
 - Agent naam altijd lowercase met hyphens
 - Bevat alleen output/resultaten, geen bronbestanden
 
@@ -68,7 +69,7 @@ README.md               # Repository overzicht en getting started
 - Elk document in Markdown (.md) format
 - Duidelijke bestandsnamen (lowercase, geen spaties, gebruik hyphens)
 - Maximaal 3 niveaus diep
-- Agent folders op eerste niveau voor duidelijke organisatie
+- Agent folders in /resultaten voor duidelijke scheiding tussen documentatie en agent output
 
 #### `/governance` - Governance
 **Doel**: Regels, normen en structuur van de workspace zelf.
