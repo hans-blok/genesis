@@ -65,8 +65,14 @@ README.md               # Repository overzicht en getting started
 - Agent naam altijd lowercase met hyphens
 - Bevat alleen output/resultaten, geen bronbestanden
 
+**Agent Output Formaten**:
+- **Standaard**: Alle agents schrijven resultaten in Markdown (.md) of Python (.py)
+- **Uitzondering**: Publisher mag alle formaten creëren (HTML, etc.)
+- Markdown voor documentatie, rapporten, analyses
+- Python voor scripts, utilities, automation
+
 **Eisen**:
-- Elk document in Markdown (.md) format
+- Elk document in Markdown (.md) format (tenzij Python script of Publisher output)
 - Duidelijke bestandsnamen (lowercase, geen spaties, gebruik hyphens)
 - Maximaal 3 niveaus diep
 - Agent folders in /resultaten voor duidelijke scheiding tussen documentatie en agent output
