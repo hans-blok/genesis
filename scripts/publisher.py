@@ -3,12 +3,13 @@
 Runner voor Publisher agent
 
 Doel: bronbestanden in markdown publiceren als leesbare pagina's en links valideren,
-zonder de inhoud van andere agents te wijzigen.
+zonder de inhoud van andere agents te wijzigen. Hanteert Japans minimalisme:
+eenvoud, balans, strakke lijnen, natuurlijke kleuren en rustige aardetinten.
 
 Zie: governance/rolbeschrijvingen/publisher.md
 Prompt: .github/prompts/publisher.prompt.md
 
-Gebruik (bron = .md, publicatie = HTML-pagina's):
+Gebruik (bron = .md, publicatie = HTML-pagina's met Japanse minimalistische stijl):
     python scripts/publisher.py document.md
     python scripts/publisher.py docs/*.md --output-dir docs
     python scripts/publisher.py document.md --check-only
@@ -74,7 +75,7 @@ def get_pandoc_version():
 
 
 def convert_to_html(input_file, output_file, standalone=True):
-    """Converteer MD naar HTML met Pandoc"""
+    """Converteer MD naar HTML met Pandoc, met Japanse minimalistische styling"""
     cmd = [
         "pandoc",
         str(input_file),
@@ -85,7 +86,9 @@ def convert_to_html(input_file, output_file, standalone=True):
     
     if standalone:
         cmd.append("--standalone")
-        cmd.extend(["-c", "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.0/github-markdown.min.css"])
+        # Gebruik een cleane, minimalistische CSS die aansluit bij Japans minimalisme
+        # (eenvoud, whitespace, natuurlijke kleuren, strakke lijnen)
+        cmd.extend(["-c", "https://cdn.simplecss.org/simple.min.css"])
     
     try:
         subprocess.run(cmd, check=True, capture_output=True, text=True)
@@ -146,7 +149,7 @@ def process_file(input_file, output_dir, formats, check_only, metadata):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Publisher agent - Valideer links en publiceer markdown als leesbare HTML-pagina's",
+        description="Publisher agent - Valideer links en publiceer markdown als leesbare HTML-pagina's met Japanse minimalistische stijl (eenvoud, balans, strakke lijnen, natuurlijke kleuren)",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Voorbeelden:
@@ -157,6 +160,7 @@ Voorbeelden:
 Output:
     Bestanden worden geplaatst in de output directory (default: huidige directory)
     Inhoud van de markdown wordt 1-op-1 overgenomen; alleen opmaak en navigatie worden toegevoegd
+    Design: Japans minimalisme - eenvoud, balans, rustige aardetinten, natuurlijke kleuren
         """
     )
     
