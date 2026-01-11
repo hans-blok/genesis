@@ -43,19 +43,32 @@ README.md               # Repository overzicht en getting started
 #### `/docs` - Documentatie
 **Doel**: Alle inhoudelijke documentatie die het primaire doel van de repository vormt.
 
-**Structuur** (suggestie):
+**Structuur**:
 ```
 /docs
-  /procedures           # Hoe-documentatie
-  /policies            # Wat-documentatie
-  /guidelines          # Best practices en richtlijnen
-  /references          # Naslagwerk en definities
+  /{agent-naam}/       # Resultaten van workspace-specifieke agents
+  /procedures          # Algemene procedures (optioneel)
+  /policies           # Algemene policies (optioneel)
+  /guidelines         # Best practices en richtlijnen (optioneel)
+  /references         # Naslagwerk en definities (optioneel)
 ```
+
+**Agent Folders** (alleen voor workspace-specifieke agents):
+- Workspace-specifieke agents leggen hun output vast in `/docs/{agent-naam}/`
+- **Niet voor Genesis standaard agents** (moeder, rolbeschrijver, publisher, logos)
+- Alleen voor agents die specifiek voor deze workspace zijn aangemaakt
+- Bijvoorbeeld:
+  - `/docs/data-validator/` - Validatie rapporten (workspace-specifiek)
+  - `/docs/report-generator/` - Gegenereerde rapporten (workspace-specifiek)
+  - `/docs/quality-checker/` - Kwaliteitsanalyses (workspace-specifiek)
+- Agent naam altijd lowercase met hyphens
+- Bevat alleen output/resultaten, geen bronbestanden
 
 **Eisen**:
 - Elk document in Markdown (.md) format
 - Duidelijke bestandsnamen (lowercase, geen spaties, gebruik hyphens)
 - Maximaal 3 niveaus diep
+- Agent folders op eerste niveau voor duidelijke organisatie
 
 #### `/governance` - Governance
 **Doel**: Regels, normen en structuur van de workspace zelf.
