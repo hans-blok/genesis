@@ -2,15 +2,15 @@
 """
 Runner voor Publisher agent
 
-Converteert Markdown documenten naar PDF en HTML met Pandoc.
+Doel: bronbestanden in markdown publiceren als leesbare pagina's en links valideren,
+zonder de inhoud van andere agents te wijzigen.
 
 Zie: governance/rolbeschrijvingen/publisher.md
 Prompt: .github/prompts/publisher.prompt.md
 
-Gebruik:
+Gebruik (bron = .md, publicatie = HTML-pagina's):
     python scripts/publisher.py document.md
-    python scripts/publisher.py document.md --format pdf
-    python scripts/publisher.py docs/*.md --output-dir build
+    python scripts/publisher.py docs/*.md --output-dir docs
     python scripts/publisher.py document.md --check-only
 """
 
@@ -73,34 +73,6 @@ def get_pandoc_version():
         return "onbekend"
 
 
-def convert_to_pdf(input_file, output_file, metadata=None):
-    """Converteer MD naar PDF met Pandoc"""
-    cmd = [
-        "pandoc",
-        str(input_file),
-        "-o", str(output_file),
-        "--pdf-engine=xelatex",  # Betere Unicode support
-        "-V", "geometry:margin=2.5cm",
-        "--toc",  # Table of contents
-        "--toc-depth=3"
-    ]
-    
-    # Metadata toevoegen
-    if metadata:
-        if metadata.get("title"):
-            cmd.extend(["-M", f"title={metadata['title']}"])
-        if metadata.get("author"):
-            cmd.extend(["-M", f"author={metadata['author']}"])
-        if metadata.get("date"):
-            cmd.extend(["-M", f"date={metadata['date']}"])
-    
-    try:
-        subprocess.run(cmd, check=True, capture_output=True, text=True)
-        return True, None
-    except subprocess.CalledProcessError as e:
-        return False, e.stderr
-
-
 def convert_to_html(input_file, output_file, standalone=True):
     """Converteer MD naar HTML met Pandoc"""
     cmd = [
@@ -156,18 +128,8 @@ def process_file(input_file, output_dir, formats, check_only, metadata):
             print_step("Alle links OK")
         return True
     
-    # Converteer naar gewenste formaten
+    # Converteer naar gewenste formaten (alleen HTML, geen inhoudelijke wijzigingen)
     success = True
-    
-    if "pdf" in formats:
-        output_file = output_dir / f"{input_file.stem}.pdf"
-        print_info(f"Genereren: {output_file.name}")
-        ok, error = convert_to_pdf(input_file, output_file, metadata)
-        if ok:
-            print_step(f"PDF: {output_file}")
-        else:
-            print_error(f"PDF conversie gefaald: {error}")
-            success = False
     
     if "html" in formats:
         output_file = output_dir / f"{input_file.stem}.html"
@@ -184,31 +146,25 @@ def process_file(input_file, output_dir, formats, check_only, metadata):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Publisher agent - Converteer Markdown naar PDF/HTML",
+        description="Publisher agent - Valideer links en publiceer markdown als leesbare HTML-pagina's",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Voorbeelden:
-  python scripts/publisher.py document.md
-  python scripts/publisher.py document.md --format pdf
-  python scripts/publisher.py document.md --format html
-  python scripts/publisher.py docs/*.md --output-dir build
-  python scripts/publisher.py document.md --check-only
-  python scripts/publisher.py document.md --title "Mijn Document" --author "Hans"
+    python scripts/publisher.py document.md
+    python scripts/publisher.py docs/*.md --output-dir docs
+    python scripts/publisher.py document.md --check-only
 
 Output:
-  Bestanden worden geplaatst in output directory (default: huidige directory)
-  PDF gebruikt xelatex engine met table of contents
-  HTML gebruikt GitHub Markdown CSS styling
+    Bestanden worden geplaatst in de output directory (default: huidige directory)
+    Inhoud van de markdown wordt 1-op-1 overgenomen; alleen opmaak en navigatie worden toegevoegd
         """
     )
     
-    parser.add_argument("files", nargs="+", help="Markdown bestand(en) om te converteren")
-    parser.add_argument("--format", choices=["pdf", "html", "both"], default="both",
-                       help="Output formaat (default: both)")
+        parser.add_argument("files", nargs="+", help="Markdown bronbestand(en) om te publiceren")
     parser.add_argument("--output-dir", type=Path, default=Path.cwd(),
                        help="Output directory (default: huidige directory)")
     parser.add_argument("--check-only", action="store_true",
-                       help="Alleen links checken, geen conversie")
+                       help="Alleen links checken, geen publicatie")
     parser.add_argument("--title", help="Document titel (metadata)")
     parser.add_argument("--author", help="Document auteur (metadata)")
     parser.add_argument("--date", help="Document datum (metadata)")
@@ -225,9 +181,9 @@ Output:
     print(f"Pandoc versie: {pandoc_version}")
     
     if args.check_only:
-        print("Mode: Link check (geen conversie)")
+        print("Mode: Link check (geen nieuwe pagina's genereren)")
     else:
-        formats = ["pdf", "html"] if args.format == "both" else [args.format]
+        formats = ["html"]
         print(f"Formaten: {', '.join(formats)}")
         print(f"Output: {args.output_dir}")
     
@@ -246,7 +202,7 @@ Output:
     
     # Verwerk bestanden
     print()
-    formats = ["pdf", "html"] if args.format == "both" else [args.format]
+    formats = ["html"]
     
     all_success = True
     processed = 0

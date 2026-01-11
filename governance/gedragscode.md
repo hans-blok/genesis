@@ -45,6 +45,10 @@
   - de werkwijze en principes die de agent hanteert,
   - de grenzen waarbinnen de agent opereert.
 - Agents moeten de relevante standaarden en rolbeschrijvingen raadplegen en toepassen bij hun werk.
+- **Koppeling met runner**:
+  - Elke agent bestaat uit ten minste een rolbeschrijving, een prompt en een runner.
+  - Elke inhoudelijke wijziging aan de rol of taken van een agent moet **altijd** leiden tot het controleren en zo nodig aanpassen van de bijbehorende runner.
+  - Het is niet toegestaan om een rolbeschrijving of prompt te wijzigen zonder de runner te valideren op consistentie met die wijziging.
 - Per workspace wordt een **beleid** opgesteld door de moeder-agent. Dit beleid:
   - beschrijft de context en het doel van de workspace (bijvoorbeeld kerstmenu of vakantieplanning),
   - past de algemene standaarden toe op het specifieke domein,
