@@ -98,6 +98,7 @@ def create_folders(workspace_path):
     """Maak folderstructuur aan volgens workspace-standaard"""
     folders = [
         "docs",
+        "docs/resultaten",
         "governance/rolbeschrijvingen",
         "templates",
         "scripts",
@@ -282,6 +283,17 @@ def copy_utility_scripts(genesis_root, workspace_path):
             print_warning(f"{script_path} niet gevonden in Genesis")
     
     return copied
+
+
+def generate_docs_index(workspace_name, workspace_path):
+    """Genereer index.md in docs folder"""
+    index_content = f"""# {workspace_name.capitalize()}
+
+Hier wordt gewerkt aan een nieuwe site.
+"""
+    
+    index_path = workspace_path / "docs/index.md"
+    index_path.write_text(index_content, encoding="utf-8")
 
 
 def generate_readme(workspace_name, description, workspace_path):
@@ -583,6 +595,10 @@ Let op:
     # 1. Folders aanmaken
     create_folders(workspace_path)
     print_step("Folderstructuur aangemaakt")
+    
+    # 1b. Docs index aanmaken
+    generate_docs_index(args.name, workspace_path)
+    print_step("docs/index.md aangemaakt")
     
     # 2. Governance documenten kopiëren
     copy_governance_documents(genesis_root, workspace_path)
