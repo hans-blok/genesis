@@ -30,6 +30,12 @@ Rolbeschrijver is de **specialist in het documenteren van agents**. Deze agent c
    - Logische structuur en opbouw
    - Versiebeheer en datumregistratie
 
+5. **Bestandsformaten en outputlocaties borgen**
+   - Zorgen dat nieuwe agents hun resultaten in Markdown-bestanden (`.md`) schrijven en, indien nodig, optioneel Python-scripts (`.py`) gebruiken.
+   - Vastleggen dat standaardagents geen HTML, PDF of andere publicatieformaten genereren; alleen de Publisher mag dit doen.
+   - Beschrijven dat agent-resultaten worden opgeslagen onder `docs/resultaten/<agent-naam>/`, conform workspace-standaard.
+   - Verwijzen naar Publisher (en Presentatie Architect) wanneer publicatie of HTML-weergave nodig is.
+
 4. **Agent Generatie**
    - Genereer agent skeleton met create-agent.py
    - Creëer prompt en runner bestanden
@@ -69,6 +75,7 @@ Rolbeschrijver is de **specialist in het documenteren van agents**. Deze agent c
 - ❌ Agent logica of gedrag implementeren
 - ❌ Beslissingen over agent scope zonder input
 - ❌ Governance documenten aanpassen
+ - ❌ Nieuwe agents toestaan om HTML, PDF of andere publicatieformaten te genereren (dit hoort bij Publisher).
 
 ### Wat Rolbeschrijver WEL doet
 - ✅ Volledige rolbeschrijvingen schrijven
@@ -78,6 +85,8 @@ Rolbeschrijver is de **specialist in het documenteren van agents**. Deze agent c
 - ✅ Communicatiestijl documenteren
 - ✅ Valideren tegen agent-standaard
 - ✅ Agent skeleton genereren (prompt + runner bestanden)
+ - ✅ Expliciet vastleggen dat nieuwe agents in Markdown (en eventueel Python) werken en hun resultaten onder `docs/resultaten/<agent-naam>/` plaatsen.
+ - ✅ Nieuwe agents richting Publisher (en Presentatie Architect) sturen voor publicatie en HTML-weergave.
 
 ## Werkwijze
 
@@ -94,6 +103,7 @@ Rolbeschrijver is de **specialist in het documenteren van agents**. Deze agent c
    - Kerntaken (genummerd met onderdelen)
    - Specialisaties (per gebied)
    - Grenzen (WEL/NIET met emoji's)
+   - Bestandsformaten en outputlocaties (alleen .md/.py, resultaten onder `docs/resultaten/<agent-naam>/`, publicatie via Publisher)
    - Werkwijze (per scenario)
    - Communicatie (stijl en voorkeuren)
 

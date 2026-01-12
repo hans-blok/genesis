@@ -57,6 +57,7 @@ README.md               # Repository overzicht en getting started
 **Agent Resultaten**:
 - Workspace-specifieke agents leggen hun output vast in `/docs/resultaten/{agent-naam}/`.
 - De Genesis-agent **publisher** legt publicatie-resultaten vast in `/docs/resultaten/publisher/`.
+- De Genesis-agent **Presentatie Architect** legt zijn eigen presentatieresultaten (kaders, richtlijnen, structuurschema's) vast in `/docs/resultaten/presentatie-architect/`.
 - **Niet voor andere Genesis standaard agents** (moeder, rolbeschrijver, logos).
 - Alleen voor agents die daadwerkelijk resultaten genereren (rapporten, analyses, publicaties).
 - Bijvoorbeeld:
@@ -64,6 +65,7 @@ README.md               # Repository overzicht en getting started
   - `/docs/resultaten/report-generator/` - Gegenereerde rapporten (workspace-specifiek)
   - `/docs/resultaten/quality-checker/` - Kwaliteitsanalyses (workspace-specifiek)
   - `/docs/resultaten/publisher/` - Publicatiebestanden (bijv. index.html, navigatie)
+  - `/docs/resultaten/presentatie-architect/` - Presentatiekaders, richtlijnen en structuurschema's
 - Agent naam altijd lowercase met hyphens.
 - Bevat alleen output/resultaten, geen bronbestanden.
 
