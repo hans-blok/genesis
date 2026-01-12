@@ -46,30 +46,35 @@ README.md               # Repository overzicht en getting started
 **Structuur**:
 ```
 /docs
-  /resultaten/         # Agent output (per agent een subfolder)
-    /{agent-naam}/     # Resultaten van workspace-specifieke agents
-  /procedures          # Algemene procedures (optioneel)
-  /policies           # Algemene policies (optioneel)
-  /guidelines         # Best practices en richtlijnen (optioneel)
-  /references         # Naslagwerk en definities (optioneel)
+  /resultaten/             # Agent output (per agent een subfolder)
+    /{agent-naam}/         # Resultaten van agents
+  /procedures              # Algemene procedures (optioneel)
+  /policies               # Algemene policies (optioneel)
+  /guidelines             # Best practices en richtlijnen (optioneel)
+  /references             # Naslagwerk en definities (optioneel)
 ```
 
-**Agent Resultaten** (alleen voor workspace-specifieke agents):
-- Workspace-specifieke agents leggen hun output vast in `/docs/resultaten/{agent-naam}/`
-- **Niet voor Genesis standaard agents** (moeder, rolbeschrijver, publisher, logos)
-- Alleen voor agents die specifiek voor deze workspace zijn aangemaakt
+**Agent Resultaten**:
+- Workspace-specifieke agents leggen hun output vast in `/docs/resultaten/{agent-naam}/`.
+- De Genesis-agent **publisher** legt publicatie-resultaten vast in `/docs/resultaten/publisher/`.
+- **Niet voor andere Genesis standaard agents** (moeder, rolbeschrijver, logos).
+- Alleen voor agents die daadwerkelijk resultaten genereren (rapporten, analyses, publicaties).
 - Bijvoorbeeld:
   - `/docs/resultaten/data-validator/` - Validatie rapporten (workspace-specifiek)
   - `/docs/resultaten/report-generator/` - Gegenereerde rapporten (workspace-specifiek)
   - `/docs/resultaten/quality-checker/` - Kwaliteitsanalyses (workspace-specifiek)
-- Agent naam altijd lowercase met hyphens
-- Bevat alleen output/resultaten, geen bronbestanden
+  - `/docs/resultaten/publisher/` - Publicatiebestanden (bijv. index.html, navigatie)
+- Agent naam altijd lowercase met hyphens.
+- Bevat alleen output/resultaten, geen bronbestanden.
 
 **Agent Output Formaten**:
-- **Standaard**: Alle agents schrijven resultaten in Markdown (.md) of Python (.py)
-- **Uitzondering**: Publisher mag alle formaten creëren (HTML, etc.)
-- Markdown voor documentatie, rapporten, analyses
-- Python voor scripts, utilities, automation
+- **Standaard**: Alle agents schrijven resultaten in Markdown (.md) of Python (.py).
+- **Uitzondering Publisher**:
+  - Publisher mag extra formaten creëren (bijvoorbeeld HTML) voor publicatie.
+  - `index.html` in `/docs/` is de enige toegestane HTML op rootniveau van `docs/`, omdat GitHub Pages deze verwacht.
+  - Overige Publisher-output (ook HTML) gaat in `/docs/resultaten/publisher/`.
+- Markdown voor documentatie, rapporten, analyses.
+- Python voor scripts, utilities, automation.
 
 **Eisen**:
 - Elk document in Markdown (.md) format (tenzij Python script of Publisher output)

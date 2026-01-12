@@ -187,6 +187,12 @@ description: <Korte beschrijving>
 
 **Karakter**: Executable automation
 
+**Plaatsing van Output**:
+- Agents die een **schema** (planning, overzicht, stappenplan) genereren, schrijven dit direct weg als Markdown-document in de daarvoor bedoelde documentstructuur (bijvoorbeeld onder `docs/` of `docs/resultaten/<agent-naam>/`).
+- Agents die een **plan** (ontwerp, voorstel, werk-in-uitvoering) genereren, plaatsen dit standaard in de tijdelijke context-map `temp/` (bijvoorbeeld `temp/<onderwerp>-plan.md`).
+- Structurele documenten voor eindgebruik (schema's, checklists, handleidingen) horen in `docs/` of onder `docs/resultaten/`.
+- Tijdelijke of experimentele documenten (plannen, varianten, voorstellen) horen in `temp/` en worden niet gecommit.
+
 **Verplichte structuur**:
 ```python
 #!/usr/bin/env python3
