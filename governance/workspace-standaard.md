@@ -100,7 +100,7 @@ README.md               # Repository overzicht en getting started
 - `CODEOWNERS` - Verantwoordelijken per gebied
 
 **Eisen**:
-- `beleid.md` bevat minimaal: context, scope, niet-in-scope (zie Constitutie Artikel 9)
+- `beleid.md` bevat minimaal: context, scope, niet-in-scope (zie Gedragscode Artikel 9)
 - Alle governance documenten op B1 taalniveau
 
 #### `/templates` - Templates
@@ -209,6 +209,19 @@ _site/
 ### `LICENSE` (Optioneel)
 - Alleen indien de repository publiekelijk wordt gedeeld
 - Kies passende licentie (bijv. MIT, CC-BY-4.0 voor documentatie)
+
+### Uitzonderingen: Hulpscripts in de root
+
+In principe staan in de root alleen governance- en overzichtsbestanden.
+Er zijn **twee toegestane uitzonderingen** voor kleine, praktische hulpscripts:
+
+- `f.bat`  – lokaal script om snel te formatteren of testen (conform beleid van de workspace).
+- `push.bat` – lokaal script om snel wijzigingen te committen en te pushen.
+
+Kenmerken van deze uitzonderingen:
+- Alleen eenvoudige hulpscripts, geen complexe logica.
+- Gebruik is optioneel en bedoeld voor lokale ontwikkelgemak.
+- Ze mogen geen inhoudelijke documenten vervangen of verbergen.
 
 ---
 
@@ -371,7 +384,7 @@ Gebruik deze checklist bij nieuwe workspace of review:
 - [ ] Code blocks hebben taal specificatie
 
 ### Governance
-- [ ] `beleid.md` conform Artikel 9 van Constitutie
+- [ ] `beleid.md` conform Artikel 9 van Gedragscode
 - [ ] Geen conflicten met centrale gedragscode
 - [ ] Rolbeschrijvingen aanwezig voor actieve agents (indien van toepassing)
 
@@ -425,7 +438,7 @@ Uitzonderingen op deze standaard zijn toegestaan wanneer:
 
 ## Referenties
 
-- [Constitutie Artikel 9](gedragscode.md#artikel-9) - Minimale vereisten voor beleid
+- [Gedragscode Artikel 9](gedragscode.md#artikel-9) - Minimale vereisten voor beleid
 - [Logos Rolbeschrijving](rolbeschrijvingen/logos.md) - Git/GitHub expert
 - [Markdown Guide](https://www.markdownguide.org/) - Markdown best practices
 

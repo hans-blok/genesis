@@ -18,7 +18,7 @@ Genesis bevat geen applicatie code, maar governance documenten, standaarden, tem
 ### Wat valt binnen de scope van Genesis:
 
 **Governance en Standaardisatie**:
-- ✅ Constitutie (gedragscode) die geldt voor alle repositories
+- ✅ Gedragscode die geldt voor alle repositories
 - ✅ Workspace standaarden voor folderstructuur en naamgeving
 - ✅ Markdown formatting standaarden
 - ✅ Git/GitHub best practices documentatie
@@ -89,7 +89,7 @@ Genesis bevat geen applicatie code, maar governance documenten, standaarden, tem
 - Zorgen voor consistente markdown formatting
 
 **Niet verantwoordelijk** in Genesis context:
-- Inhoudelijke wijzigingen aan constitutie (alleen redactioneel indien toegestaan)
+- Inhoudelijke wijzigingen aan gedragscode (alleen redactioneel indien toegestaan)
 - Maken van domein-specifieke agents
 - Business beslissingen over governance regels
 
@@ -103,7 +103,7 @@ Genesis bevat alleen Agent Logos. Andere agents worden gedefinieerd in:
 
 ### Documentatie
 - Alle documenten in Nederlands
-- Taalniveau B1 (conform Constitutie Artikel 2)
+- Taalniveau B1 (conform Gedragscode Artikel 2)
 - Markdown (.md) format
 - Duidelijke structuur met logische headings
 
@@ -114,7 +114,7 @@ Genesis bevat alleen Agent Logos. Andere agents worden gedefinieerd in:
 - Maximaal 3 niveaus diep
 
 ### Governance
-- Geen conflicten met constitutie
+- Geen conflicten met gedragscode
 - Duidelijke scope afbakening
 - Traceerbare beslissingen
 - Versiebeheer van belangrijke documenten
@@ -137,7 +137,7 @@ Genesis wordt onderhouden door:
 
 **Governance documenten** (gedragscode.md):
 - Alleen inhoudelijke wijzigingen door mensen
-- Logos mag alleen redactioneel verbeteren (zie Constitutie Artikel 8)
+- Logos mag alleen redactioneel verbeteren (zie Gedragscode Artikel 8)
 - Vereist review en goedkeuring
 
 **Standaarden** (workspace-standaard.md):
