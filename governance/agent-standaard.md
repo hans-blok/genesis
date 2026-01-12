@@ -98,11 +98,11 @@ Elke agent bestaat uit **drie verplichte componenten**:
 
 ### 2. Prompt (Contract)
 
-**Locatie**: `/.github/prompts/<agent-naam>.prompt.md`
+**Locatie**: /.github/prompts/<agent-naam>.prompt.md
 
 **Doel**: Definieert het contract tussen gebruiker en agent - wat gaat erin, wat komt eruit.
 
-**Karakter**: Interface specificatie
+**Karakter**: Interface specificatie (geen gedetailleerde werkinstructies).
 
 **Verplichte structuur**:
 ```markdown
@@ -115,69 +115,48 @@ description: <Korte beschrijving>
 
 ## Rolbeschrijving
 
-**VERPLICHT**: Lees `governance/rolbeschrijvingen/<agent-naam>.md` voor volledige context.
+<Korte samenvatting van de rol>.
+
+**VERPLICHT**: Lees governance/rolbeschrijvingen/<agent-naam>.md voor volledige context.
 
 ## Contract
 
 ### Input (Wat gaat erin)
 
-**Verplichte parameters**:
-- `<parameter1>`: <beschrijving> (type: <type>)
-- `<parameter2>`: <beschrijving> (type: <type>)
+**Verplichte parameters** (of vrije opdracht):
+- <parameter1>: <beschrijving> (type: <type>)
 
 **Optionele parameters**:
-- `<parameter3>`: <beschrijving> (type: <type>, default: <waarde>)
-
-**Voorbeelden**:
-```
-@github /<agent> <parameter1>=waarde1 <parameter2>=waarde2
-```
+- <parameter2>: <beschrijving> (type: <type>, default: <waarde>)
 
 ### Output (Wat komt eruit)
 
-**Gegarandeerde output**:
-- `<output1>`: <beschrijving>
-- `<output2>`: <beschrijving>
-
-**Artefacten**:
-- Bestand: `<pad/bestand.md>` - <beschrijving>
-- Update: `<pad/bestand.md>` - <welke sectie>
-
-**Success criteria**:
-- [ ] <criterium 1>
-- [ ] <criterium 2>
+Bij een geldige opdracht levert de agent altijd:
+- Een korte samenvatting van de uitgevoerde of voorgenomen actie.
+- Een overzicht van de belangrijkste resultaten of bevindingen.
+- Eventuele waarschuwingen als iets afwijkt van governance of rolbeschrijving.
 
 ### Foutafhandeling
 
-**Stopt wanneer**:
-- <voorwaarde 1>
-- <voorwaarde 2>
-
-**Vraagt om verduidelijking bij**:
-- <onduidelijkheid 1>
-- <onduidelijkheid 2>
+De agent:
+- Stopt wanneer acties in strijd zouden zijn met governance of eigen grenzen.
+- Vraagt om verduidelijking bij onduidelijke opdrachten of ontbrekende informatie.
 
 ## Werkwijze
 
-**Principes**:
-- <principe 1>
-- <principe 2>
-
-**Gedrag**:
-- <gedrags regel 1>
-- <gedrags regel 2>
+Deze prompt is een contract op hoofdlijnen. Voor alle details over gedrag, scenario's en interne stappen verwijst de agent volledig naar governance/rolbeschrijvingen/<agent-naam>.md.
 
 ---
 
-**Documentatie**: Zie [governance/rolbeschrijvingen/<agent-naam>.md]
-**Runner**: `scripts/<agent-naam>.py`
+Documentatie: Zie governance/rolbeschrijvingen/<agent-naam>.md  
+Runner: scripts/<agent-naam>.py
 ```
 
 **Kenmerken**:
-- **Compact**: Essentiële interface informatie
-- **Contract**: Duidelijk in/uit
-- **Actionable**: Direct bruikbaar door Copilot
-- **Verwijst**: Naar volledige rolbeschrijving
+- Compact: alleen essentiële interface-informatie.
+- Contract: duidelijk wat erin gaat en wat eruit komt.
+- Actionable: direct bruikbaar door Copilot.
+- Gescheiden verantwoordelijkheden: details staan in de rolbeschrijving, niet in de prompt.
 
 ### 3. Runner (Python Script)
 
