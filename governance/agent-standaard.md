@@ -166,6 +166,26 @@ Runner: scripts/<agent-naam>.py
 
 **Karakter**: Executable automation
 
+### Aanbevolen basisontwerp voor runners
+
+Sommige agents bestaan uit meerdere vaste stappen (bijvoorbeeld: boundary → contract → rol → runner). Voor dit soort agents is het aanbevolen om **één hoofd-runner** te maken die meerdere operaties kan uitvoeren.
+
+1) **Eén hoofd-runner per agent**
+- Doet **routing**: kiest welke operatie hoort bij de opdracht.
+- Doet **policy**: voert scope checks, quality gates en anti-pattern checks uit.
+- Beheert **state**: geeft context door tussen operaties (bijvoorbeeld de boundary en gekozen parameters).
+- Doet **logging/traceerbaarheid**: legt per operatie een kort artefact vast (wat is gedaan en welke bestanden zijn geraakt).
+
+2) **Operation handlers (interne subroutines, geen aparte runners)**
+- Per vaste stap één interne handler/functie (conceptueel):
+    - boundary-definitie
+    - prompt-design (contract)
+    - rolbeschrijving genereren
+    - runner genereren (voor de nieuwe agent)
+- Deze handlers zijn **geen** losse `scripts/<stap>.py` runners; ze zijn onderdeel van dezelfde hoofd-runner.
+
+Dit ontwerp houdt de automation consistent en voorkomt dat scope/quality checks per stap verschillen.
+
 **Plaatsing van Output**:
 - Agents die een **schema** (planning, overzicht, stappenplan) genereren, schrijven dit direct weg als Markdown-document in de daarvoor bedoelde documentstructuur (bijvoorbeeld onder `docs/` of `docs/resultaten/<agent-naam>/`).
 - Agents die een **plan** (ontwerp, voorstel, werk-in-uitvoering) genereren, plaatsen dit standaard in de tijdelijke context-map `temp/` (bijvoorbeeld `temp/<onderwerp>-plan.md`).
@@ -345,6 +365,83 @@ if __name__ == '__main__':
 - **CLI**: Argument parsing met help
 - **Testbaar**: Unit test vriendelijk
 
+**Best practices voor runner code**:
+
+1. **Import ordering**: Groepeer imports logisch
+   ```python
+   # Standaard library (stdlib)
+   import sys
+   from pathlib import Path
+   
+   # Third-party packages
+   # (indien van toepassing)
+   
+   # Lokale imports
+   from agent_naam.core import execute_operation
+   ```
+
+2. **Constanten**: Definieer magic numbers/strings bovenaan
+   ```python
+   # Policy constants
+   MIN_BOUNDARY_LENGTH = 10
+   FORBIDDEN_TERMS_DEFAULT = ("pdf", "html")
+   MAX_RETRIES = 3
+   DEFAULT_TIMEOUT = 30
+   ```
+
+3. **Type hints**: Gebruik moderne Python 3.10+ syntax
+   ```python
+   # Modern (voorkeur)
+   def process(data: str | None = None) -> list[Path]:
+       pass
+   
+   # Oudere stijl (vermijd indien Python 3.10+)
+   from typing import Optional, List
+   def process(data: Optional[str] = None) -> List[Path]:
+       pass
+   ```
+
+4. **Exception handling**: Wees specifiek, vermijd bare `except`
+   ```python
+   # Goed
+   try:
+       rel = path.relative_to(workspace_root)
+   except ValueError:
+       # Path is not relative to workspace_root
+       rel = str(path)
+   
+   # Vermijd
+   except Exception:
+       pass
+   ```
+
+5. **Exit codes**: Gebruik conventionele codes
+   - `0`: success
+   - `1`: algemene fout (validatie, policy, runtime)
+   - `2`: misuse (syntax error, verkeerde argumenten) — alleen voor CLI parsing errors
+
+6. **Template management**: Voor grote templates (prompt/rol/runner skeletons)
+   - Overweeg aparte template-bestanden in `scripts/<agent_naam>/templates/`
+   - Laad templates runtime in plaats van hardcoded strings
+   - Maakt onderhoud en aanpassingen eenvoudiger
+
+7. **Logging en traceability**: Leg acties vast
+   - Print belangrijke stappen naar stdout
+   - Errors naar stderr
+   - Optioneel: schrijf trace/audit bestanden naar `temp/`
+   - Overweeg `logging` module voor complexere runners
+
+8. **Dataclasses**: Gebruik frozen dataclasses voor results
+   ```python
+   from dataclasses import dataclass
+   
+   @dataclass(frozen=True)
+   class OperationResult:
+       success: bool
+       message: str
+       artifacts: list[Path]
+   ```
+
 ---
 
 ## Naamgevingsconventies
@@ -488,6 +585,8 @@ Bij het maken of reviewen van een agent:
 - [ ] Error handling aanwezig
 - [ ] CLI argumenten gedocumenteerd
 - [ ] Main guard (`if __name__ == '__main__'`)
+- [ ] Bij multi-step agents: één hoofd-runner met interne operation handlers (geen losse stap-runners)
+- [ ] Bij multi-step agents: twee lagen (frontdoor + core) of equivalent, zodat parsing/formatting los staat van policy/uitvoering
 
 ### Consistentie
 - [ ] Alle drie componenten hebben zelfde `<agent-naam>`

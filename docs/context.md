@@ -16,16 +16,18 @@ Deze workspace richt zich op:
 - Het documenteren van governance regels (gedragscode)
 - Het beschrijven van agent componenten en hun werking
 - Het aanbieden van templates en initialisatie scripts
-- Het leveren van basis agents (moeder, rolbeschrijver) voor nieuwe workspaces
+- Het leveren en beheren van basis agents voor nieuwe workspaces
 
 ## Scope
 
 ### Wat valt binnen deze workspace:
 - Governance documenten (gedragscode, workspace-standaard, agent-standaard)
 - Standaarden voor folderstructuur en naamgeving
-- Agent Logos definitie en rolbeschrijving (Genesis-specifiek)
-- Agent Moeder definitie (template voor andere workspaces)
+- Agent Logos (Genesis-specifiek)
+- Agent Moeder (basisworkspace-ordenaar)
 - Agent Rolbeschrijver (herbruikbaar voor alle workspaces)
+- Agent Presentatie Architect (kaders voor presentatie en documentstructuur)
+- Agent Publisher (publicatie naar GitHub Pages)
 - Templates voor documenten en rolbeschrijvingen
 - Initialisatie scripts (init-workspace.py, create-agent.py)
 - Editor configuraties
@@ -44,24 +46,33 @@ Deze workspace richt zich op:
    - Doel: Git/GitHub expert voor Genesis repository structurering
    - Status: Volledig geïmplementeerd (rolbeschrijving + prompt)
 
-2. **Rolbeschrijver** (genesis.rolbeschrijver)
+2. **Moeder** (genesis.moeder)
+   - Type: Technische Beheerder
+   - Doel: Bewaakt de ordening en basisstructuur van workspaces
+   - Status: Volledig geïmplementeerd (rolbeschrijving + prompt)
+
+3. **Rolbeschrijver** (genesis.rolbeschrijver)
    - Type: Domein Expert
    - Doel: Specialist in agent documentatie en rolbeschrijvingen
    - Status: Volledig geïmplementeerd (rolbeschrijving + prompt)
 
-### Voorgestelde Agents
-3. **Moeder** (genesis.moeder)
-   - Type: Technische Beheerder
-   - Doel: Template voor workspace-specifieke Git/GitHub expert + ordening
-   - Status: TODO - Variant van Logos voor andere workspaces
-   - Motivatie: Elke workspace krijgt eigen moeder agent via init script
+4. **Presentatie Architect** (genesis.presentatie-architect)
+   - Type: Domein Expert
+   - Doel: Ontwerpt kaders voor presentatie en documentstructuur
+   - Status: Volledig geïmplementeerd (rolbeschrijving + prompt)
 
-4. **Contract-schrijver** (genesis.contract-schrijver)
+5. **Publisher** (genesis.publisher)
+   - Type: Technische Beheerder / Utility
+   - Doel: Publiceert documentatie naar GitHub Pages, binnen de kaders van de Presentatie Architect
+   - Status: Volledig geïmplementeerd (rolbeschrijving + prompt)
+
+### Voorgestelde Agents
+6. **Contract-schrijver** (genesis.contract-schrijver)
    - Type: Domein Expert
    - Doel: Specialist in het schrijven van agent prompts (contract: in/uit)
    - Motivatie: Complement van rolbeschrijver, focus op interface definitie
 
-5. **Validator** (genesis.validator)
+7. **Validator** (genesis.validator)
    - Type: Utility
    - Doel: Valideert workspace tegen standaarden en governance
    - Motivatie: Automatische kwaliteitscontrole

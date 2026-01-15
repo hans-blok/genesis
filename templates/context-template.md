@@ -32,7 +32,7 @@ Deze workspace richt zich op:
 
 ## Benodigde Agents
 
-### Huidige Agents
+### Huidige Agents (standaard vanuit Genesis)
 1. **Moeder** (workspace.moeder)
    - Type: Technische Beheerder
    - Doel: Git/GitHub expert en workspace ordening
@@ -43,8 +43,18 @@ Deze workspace richt zich op:
    - Doel: Agent documentatie specialist
    - Status: Standaard geïnstalleerd
 
+3. **Presentatie Architect** (workspace.presentatie-architect)
+   - Type: Domein Expert
+   - Doel: Ontwerpt kaders voor presentatie en documentstructuur
+   - Status: Standaard geïnstalleerd
+
+4. **Publisher** (workspace.publisher)
+   - Type: Technische Beheerder / Utility
+   - Doel: Publiceert documentatie naar GitHub Pages binnen de kaders van de Presentatie Architect
+   - Status: Standaard geïnstalleerd
+
 ### Voorgestelde Agents
-3. **[Agent naam]** (workspace.[agent-naam])
+5. **[Agent naam]** (workspace.[agent-naam])
    - Type: [Technische Beheerder / Domein Expert / Utility]
    - Doel: [Korte beschrijving]
    - Motivatie: [Waarom nodig?]
